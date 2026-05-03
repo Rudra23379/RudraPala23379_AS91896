@@ -13,7 +13,7 @@ label.pack(pady=20)
 
 # Load and convert image
 Homescreen_image = Image.open("images/Title_forest.jpg")
-Homescreen_image=Homescreen_image.resize(800,600)
+Homescreen_image=Homescreen_image.resize ((1950,1200))
 tk_image = ImageTk.PhotoImage(Homescreen_image)
 
 background_label = tk.Label(root, image=tk_image)
