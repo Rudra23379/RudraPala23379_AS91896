@@ -2,38 +2,44 @@ import tkinter as tk
 from PIL import Image, ImageTk
 
 
-
-
-
 class Homescreen:
-    root = tk.Tk()
-    root.title("My flags quiz")
-    root.geometry("800x600")
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("My flags quiz")
+        self.root.geometry("800x600")
 
-    # Load and convert image
-    homescreen_image = Image.open("images/evenevenevenevenevenbetterhomepagesharp.png")
-    homescreen_image = homescreen_image.resize((1950, 1200))
-    tk_image = ImageTk.PhotoImage(homescreen_image)
+        # 1. Background Image
+        img = Image.open("images/evenevenevenevenevenbetterhomepagesharp.png")
+        img = img.resize((800, 600))
+        self.tk_image = ImageTk.PhotoImage(img)
 
-    background_label = tk.Label(root, image=tk_image)
-    background_label.place(x=0, y=0, relwidth=1, relheight=1)
-
-    # Display image
-    image_label = tk.Label(root, image=tk_image)
-    image_label.image = tk_image
-    image_label.pack()
-
-    canvas = tk.Canvas(root, width=800, height=600, highlightthickness=0)
-    canvas.pack()
-    canvas.create_image(0, 0, image=tk_image, anchor="nw")
-
-    label = tk.Label(root, text="Welcome To My Flag Quiz", font=("Arial", 40))
-    label.pack(pady=20)
-
-    Label = tk.Label(root, text="My Flag Quiz", font=("Arial", 40))
+        # Use place to make it a true background
+        self.background_label = tk.Label(self.root, image=self.tk_image)
+        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 
+        # 3. The Start Button (Placed on top of the image)
+        self.start_button = tk.Button(
+            self.root,
+            text="Start Quiz",
+            command=self.start_quiz,
+            font=("Arial", 20),
+            bg="green",
+            fg="white",
+            padx=20,
+            pady=10
+
+        )
+
+        # Use .place() to put it exactly where you want it on the image
+        # relx and rely use 0.0 to 1.0 (0.5 is exactly the middle)
+        self.start_button.place(relx=0.5, rely=0.5, anchor="center")
+
+        self.root.mainloop()
+
+    def start_quiz(self):
+        print("Quiz is starting!")
 
 
-
-    root.mainloop()
+if __name__ == "__main__":
+    Homescreen()
