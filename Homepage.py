@@ -13,28 +13,31 @@ bg_label = ctk.CTkLabel(root, image=bg_image, text="")
 bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 root.title("My Flag Quiz")
-title_text = ctk.CTkLabel(root, text="Welcome to my flag quiz",
-font=("Arial", 56, "bold"), text_color="#1a5c3a",fg_color="transparent")
-title_text.place(x=600, y=90)
+title_text = ctk.CTkLabel(bg_label, text="Welcome to my flag quiz",
+font=("Arial", 56, "bold"), text_color="#1a5c3a",fg_color="transparent",bg_color="transparent")
+title_text.place(relx=0.5, rely=0.15, anchor="center")
 
 
-quit_button = ctk.CTkButton(root, text="Quit", command=root.quit, text_color="#ffffff", corner_radius=27, width=160, height=40,)
-quit_button.place(x=15, y=35)
+quit_button = ctk.CTkButton(bg_label, text="Quit", command=root.quit, text_color="#ffffff", corner_radius=27, width=160, height=40,bg_color="#c8e690", border_width = 0)
+quit_button.place(relx=0.06, rely=0.16, anchor="center")
 
 
-quit_icon = ctk.CTkButton(root,text="⏻", width=64, height=64,corner_radius=32, command=root.quit,font=("CanvaSans", 32, "bold"))
-quit_icon.place(x=300, y=400)
-
-help_icon = ctk.CTkButton(root, text="?", width=64,height=64,corner_radius=32,font=("CanvaSans", 32, "bold"),)
-help_icon.place(x=200, y=200)
+quit_icon = ctk.CTkButton(bg_label,text="⏻", width=64, height=64,corner_radius=32, command=root.quit,font=("CanvaSans", 32, "bold"),bg_color="#c8e690", hover_color="#ffffff")
+quit_icon.place(relx=0.06, rely=0.08, anchor="center")
 
 
+help_icon = ctk.CTkButton(bg_label, text="?", width=64,height=64,corner_radius=32,font=("CanvaSans", 32, "bold"),bg_color="transparent",hover_color="#ffffff")
+help_icon.place(relx=0.94, rely=0.08, anchor="center")
 
-help_button = ctk.CTkButton(root, text="Help" )
-help_button.place(x=1400, y=35)
 
-username = ctk.CTkEntry(root, placeholder_text="please enter your name here", width=320,height=50)
-username.place(x=400, y=450)
 
+help_button = ctk.CTkButton(bg_label, text="Help",bg_color="transparent",hover_color="#ffffff" )
+help_button.place(relx=0.94, rely=0.16, anchor="center")
+
+username = ctk.CTkEntry(bg_label, placeholder_text="please enter your name here", width=320,height=50)
+username.place(relx=0.5, rely=0.7, anchor="center")
+
+start_button =ctk.CTkButton(bg_label, text="start", corner_radius= 27, width= 180 , height=50,bg_color="transparent",border_width = 0,)
+start_button.place(relx=0.45, rely=0.5, anchor="center")
 
 root.mainloop()
