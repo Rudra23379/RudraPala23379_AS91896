@@ -1,4 +1,5 @@
 from tkinter import Button
+
 import customtkinter as ctk
 from PIL import Image, ImageTk
 
@@ -41,7 +42,9 @@ help_icon.place(relx=0.94, rely=0.08, anchor="center")
 help_button = ctk.CTkButton(bg_label, text="Help",bg_color="transparent",hover_color="#ffffff",fg_color="#2d6349" )
 help_button.place(relx=0.94, rely=0.16, anchor="center")
 
-username = ctk.CTkEntry(bg_label, placeholder_text="please enter your name here", width=320,height=50)
+username = ctk.CTkEntry(bg_label, placeholder_text="please enter your name here",
+width=320,height=50, justify="center", corner_radius=32,text_color="#ffffff",
+placeholder_text_color="#ffffff",fg_color="#2d6349",bg_color="#2d6349")
 username.place(relx=0.5, rely=0.7, anchor="center")
 
 start_button =ctk.CTkButton(bg_label, text="start", corner_radius= 32, width= 220 , height=70,bg_color="#2d6349",border_width = 0,
