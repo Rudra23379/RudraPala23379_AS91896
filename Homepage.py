@@ -11,7 +11,7 @@ class Flagquiz:
         self.root = root
         self.root.after(0, lambda: root.state('zoomed'))
 
-        # Track which page the user is currently on ("starter" or "diff")
+        # page tracker
         self.current_page = "starter"
 
         # Display dimensions
@@ -78,7 +78,7 @@ class Flagquiz:
             print("please enter a vaild name")
             return
 
-        # Update our current page tracker
+        # Update page tracker
         self.current_page = "diff"
 
         # Unpacking starter page widgets
@@ -114,7 +114,7 @@ class Flagquiz:
         self.medium_button.place_forget()
         self.hard_button.place_forget()
 
-    # METHOD FOR HELP SCREEN
+    #  help page
     def help_page(self):
         # Hide whichever page layout elements are currently active
         if self.current_page == "starter":
@@ -134,33 +134,79 @@ class Flagquiz:
                                        font=("CanvaSans", 56, "bold"), text_color="#ffffff")
         self.help_title.place(relx=0.5, rely=0.15, anchor="center")
 
-        # Text rules layout blocks
-        rules_text = (
-            "• Identify the Flag: Look at the image in the center and choose the correct\n"
-            "country from the four options.\n\n"
-            "• Watch the Timer: Depending on your difficulty, you will have unlimited time,\n"
-            "10 seconds or 5 seconds to answer.\n\n"
-            "• Navigation: Use the Next button to move forward.\n\n"
-            "• Quit Anytime: If you need to stop, just hit the Power icon in the top left."
-        )
+        # Help page text
 
-        self.help_rules = ctk.CTkLabel(self.bg_label, text=rules_text, font=("CanvaSans", 20),
-                                       text_color="#ffffff", justify="center")
-        self.help_rules.place(relx=0.5, rely=0.5, anchor="center")
+        # Bullet 1
+        self.rule1_header = ctk.CTkLabel(self.bg_label, text="• Identify the Flag:", font=("CanvaSans", 24, "bold"),
+                                         text_color="#ffffff")
+        self.rule1_header.place(relx=0.18, rely=0.30, anchor="center")
+        self.rule1_body = ctk.CTkLabel(self.bg_label,
+                                       text="Look at the image in the center and choose the correct country from the four options.",
+                                       font=("CanvaSans", 20), text_color="#ffffff")
+        self.rule1_body.place(relx=0.45, rely=0.30, anchor="center")
+
+        # Bullet 2
+        self.rule2_header = ctk.CTkLabel(self.bg_label, text="• Watch the Timer:", font=("CanvaSans", 24, "bold"),
+                                         text_color="#ffffff")
+        self.rule2_header.place(relx=0.5, rely=0.44, anchor="center")
+        self.rule2_body = ctk.CTkLabel(self.bg_label,
+                                       text="Depending on your difficulty, you will have unlimited time, 10 seconds or 5 seconds to answer.",
+                                       font=("CanvaSans", 20), text_color="#ffffff")
+        self.rule2_body.place(relx=0.5, rely=0.48, anchor="center")
+
+        # Bullet 3
+        self.rule3_header = ctk.CTkLabel(self.bg_label, text="• Navigation:", font=("CanvaSans", 24, "bold"),
+                                         text_color="#ffffff")
+        self.rule3_header.place(relx=0.5, rely=0.56, anchor="center")
+        self.rule3_body = ctk.CTkLabel(self.bg_label, text="Use the Next button to move forward.",
+                                       font=("CanvaSans", 20), text_color="#ffffff")
+        self.rule3_body.place(relx=0.5, rely=0.60, anchor="center")
+
+        # Bullet 4
+        self.rule4_header = ctk.CTkLabel(self.bg_label, text="• Quit Anytime:", font=("CanvaSans", 24, "bold"),
+                                         text_color="#ffffff")
+        self.rule4_header.place(relx=0.5, rely=0.68, anchor="center")
+        self.rule4_body = ctk.CTkLabel(self.bg_label,
+                                       text="If you need to stop, just hit the Power icon in the top left.",
+                                       font=("CanvaSans", 20), text_color="#ffffff")
+        self.rule4_body.place(relx=0.5, rely=0.72, anchor="center")
+
+        # Bullet 5
+        self.rule5_header = ctk.CTkLabel(self.bg_label, text="• Score System:", font=("CanvaSans", 24, "bold"),
+                                         text_color="#ffffff")
+        self.rule5_header.place(relx=0.5, rely=0.68, anchor="center")
+        self.rule5_body = ctk.CTkLabel(self.bg_label,
+                                       text="Your score will be shown at the end of the quiz.",
+                                       font=("CanvaSans", 20), text_color="#ffffff")
+        self.rule5_body.place(relx=0.5, rely=0.88, anchor="center")
+
 
         # Go Back layout switch button
         self.back_button = ctk.CTkButton(self.bg_label, text="Go Back", corner_radius=32,
                                          width=200, height=60, fg_color="#475d5b", hover_color="#ffffff",
                                          text_color="#ffffff", font=("CanvaSans", 22, "bold"),
                                          command=self.close_help)
-        self.back_button.place(relx=0.5, rely=0.85, anchor="center")
+        self.back_button.place(relx=0.5, rely=0.70, anchor="center")
 
-    # RETURN METHOD FROM HELP SCREEN
+
+
+    # return from help screen
     def close_help(self):
         # Clean up rules page components
         self.help_title.place_forget()
-        self.help_rules.place_forget()
         self.back_button.place_forget()
+
+        # Clear all text from active memory
+        self.rule1_header.place_forget()
+        self.rule1_body.place_forget()
+        self.rule2_header.place_forget()
+        self.rule2_body.place_forget()
+        self.rule3_header.place_forget()
+        self.rule3_body.place_forget()
+        self.rule4_header.place_forget()
+        self.rule4_body.place_forget()
+        self.rule5_header.place_forget()
+        self.rule5_body.place_forget()
 
         # Restore the exact layout the user came from
         if self.current_page == "starter":
