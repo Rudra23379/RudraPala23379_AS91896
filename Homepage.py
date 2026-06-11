@@ -33,30 +33,30 @@ class Flagquiz:
         self.title_text.place(relx=0.46, rely=0.15, anchor="center")
 
         # Quit button
-        quit_button = ctk.CTkButton(self.bg_label, text="Quit", command=root.quit,
+        self.quit_button = ctk.CTkButton(self.bg_label, text="Quit", command=root.quit,
                                     text_color="#ffffff", corner_radius=27, width=160,
                                     height=40, bg_color="#c8e690", border_width=0,
                                     font=("CanvaSans", 22, "bold"), fg_color="#2d6349")
-        quit_button.place(relx=0.06, rely=0.16, anchor="center")
+        self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
 
         # Quiz button icon
-        quit_icon = ctk.CTkButton(self.bg_label, text="⏻", width=64, height=64, corner_radius=32,
+        self.quit_icon = ctk.CTkButton(self.bg_label, text="⏻", width=64, height=64, corner_radius=32,
                                   command=root.quit, font=("CanvaSans", 36, "bold"),
                                   bg_color="#c8e690", hover_color="#ffffff", fg_color="#2d6349")
-        quit_icon.place(relx=0.06, rely=0.08, anchor="center")
+        self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
 
         # Help button icon
-        help_icon = ctk.CTkButton(self.bg_label, text=" ? ", width=64, height=64, corner_radius=32,
+        self.help_icon = ctk.CTkButton(self.bg_label, text=" ? ", width=64, height=64, corner_radius=32,
                                   font=("CanvaSans", 36, "bold"), bg_color="#c8e690", hover_color="#ffffff",
                                   fg_color="#2d6349", command=self.help_page)
-        help_icon.place(relx=0.94, rely=0.08, anchor="center")
+        self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
 
         # Help button
-        help_button = ctk.CTkButton(self.bg_label, text="Help", bg_color="#c8e690", hover_color="#ffffff",
+        self.help_button = ctk.CTkButton(self.bg_label, text="Help", bg_color="#c8e690", hover_color="#ffffff",
                                     fg_color="#2d6349", font=("CanvaSans", 22, "bold"), corner_radius=32, width=160,
                                     height=40,
                                     command=self.help_page)
-        help_button.place(relx=0.94, rely=0.16, anchor="center")
+        self.help_button.place(relx=0.94, rely=0.16, anchor="center")
 
         # Username Input
         self.username = ctk.CTkEntry(self.bg_label, placeholder_text="please enter your name here",
@@ -117,6 +117,13 @@ class Flagquiz:
     #  help page
     def help_page(self):
         # Hide whichever page layout elements are currently active
+
+        # Hide Help/Quit buttons
+        self.help_button.place_forget()
+        self.help_icon.place_forget()
+        self.quit_button.place_forget()
+        self.quit_icon.place_forget()
+
         if self.current_page == "starter":
             self.title_text.place_forget()
             self.username.place_forget()
@@ -132,61 +139,68 @@ class Flagquiz:
         # Add "How to play" title
         self.help_title = ctk.CTkLabel(self.bg_label, text="How to play",
                                        font=("CanvaSans", 56, "bold"), text_color="#ffffff")
-        self.help_title.place(relx=0.5, rely=0.15, anchor="center")
+        self.help_title.place(relx=0.5, rely=0.13, anchor="center")
 
         # Help page text
 
         # Bullet 1
         self.rule1_header = ctk.CTkLabel(self.bg_label, text="• Identify the Flag:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
-        self.rule1_header.place(relx=0.5, rely=0.28, anchor="center")
+        self.rule1_header.place(relx=0.5, rely=0.21, anchor="center")
         self.rule1_body = ctk.CTkLabel(self.bg_label,
                                        text="Look at the image in the center and choose the correct country from the four options.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
-        self.rule1_body.place(relx=0.5, rely=0.33, anchor="center")
+        self.rule1_body.place(relx=0.5, rely=0.25, anchor="center")
 
-        # Bullet 2
+        # Bullet 3
         self.rule2_header = ctk.CTkLabel(self.bg_label, text="• Watch the Timer:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
-        self.rule2_header.place(relx=0.5, rely=0.38, anchor="center")
+        self.rule2_header.place(relx=0.5, rely=0.43, anchor="center")
         self.rule2_body = ctk.CTkLabel(self.bg_label,
                                        text="Depending on your difficulty, you will have unlimited time, 10 seconds or 5 seconds to answer.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
-        self.rule2_body.place(relx=0.5, rely=0.45, anchor="center")
-
-        # Bullet 3
-        self.rule3_header = ctk.CTkLabel(self.bg_label, text="• Navigation:", font=("CanvaSans", 24, "bold"),
-                                         text_color="#ffffff")
-        self.rule3_header.place(relx=0.5, rely=0.49, anchor="center")
-        self.rule3_body = ctk.CTkLabel(self.bg_label, text="Use the Next button to move forward.",
-                                       font=("CanvaSans", 20), text_color="#ffffff")
-        self.rule3_body.place(relx=0.5, rely=0.53, anchor="center")
+        self.rule2_body.place(relx=0.5, rely=0.47, anchor="center")
 
         # Bullet 4
+        self.rule3_header = ctk.CTkLabel(self.bg_label, text="• Navigation:", font=("CanvaSans", 24, "bold"),
+                                         text_color="#ffffff")
+        self.rule3_header.place(relx=0.5, rely=0.54, anchor="center")
+        self.rule3_body = ctk.CTkLabel(self.bg_label, text="Use the Next button to move forward.",
+                                       font=("CanvaSans", 20), text_color="#ffffff")
+        self.rule3_body.place(relx=0.5, rely=0.58, anchor="center")
+
+        # Bullet 5
         self.rule4_header = ctk.CTkLabel(self.bg_label, text="• Quit Anytime:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
-        self.rule4_header.place(relx=0.5, rely=0.57, anchor="center")
+        self.rule4_header.place(relx=0.5, rely=0.65, anchor="center")
         self.rule4_body = ctk.CTkLabel(self.bg_label,
                                        text="If you need to stop, just hit the Power icon in the top left.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
-        self.rule4_body.place(relx=0.5, rely=0.61, anchor="center")
+        self.rule4_body.place(relx=0.5, rely=0.69, anchor="center")
 
-        # Bullet 5
+        # Bullet 6
         self.rule5_header = ctk.CTkLabel(self.bg_label, text="• Score System:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
-        self.rule5_header.place(relx=0.5, rely=0.67, anchor="center")
+        self.rule5_header.place(relx=0.5, rely=0.75, anchor="center")
         self.rule5_body = ctk.CTkLabel(self.bg_label,
                                        text="Your score will be shown at the end of the quiz.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
-        self.rule5_body.place(relx=0.5, rely=0.72, anchor="center")
+        self.rule5_body.place(relx=0.5, rely=0.8, anchor="center")
+        # Bullet 2
 
+        self.rule6_header = ctk.CTkLabel(self.bg_label, text="• Selecting an Answer:", font=("CanvaSans", 24, "bold"),
+                                         text_color="#ffffff")
+        self.rule6_header.place(relx=0.5, rely=0.32, anchor="center")
+        self.rule6_body = ctk.CTkLabel(self.bg_label, text="When you click an option, the button will change colour to show your selection has been registered.",
+                                       font=("CanvaSans", 20), text_color="#ffffff")
+        self.rule6_body.place(relx=0.5, rely=0.36, anchor="center")
 
         # Go Back layout switch button
         self.back_button = ctk.CTkButton(self.bg_label, text="Go Back", corner_radius=32,
                                          width=200, height=60, fg_color="#475d5b", hover_color="#ffffff",
                                          text_color="#ffffff", font=("CanvaSans", 22, "bold"),
                                          command=self.close_help)
-        self.back_button.place(relx=0.5, rely=0.85, anchor="center")
+        self.back_button.place(relx=0.5, rely=0.9, anchor="center")
 
 
 
@@ -207,6 +221,9 @@ class Flagquiz:
         self.rule4_body.place_forget()
         self.rule5_header.place_forget()
         self.rule5_body.place_forget()
+        self.rule6_header.place_forget()
+        self.rule6_body.place_forget()
+
 
         # Restore the exact layout the user came from
         if self.current_page == "starter":
@@ -218,6 +235,11 @@ class Flagquiz:
             self.title_text.place(relx=0.46, rely=0.15, anchor="center")
             self.username.place(relx=0.5, rely=0.7, anchor="center")
             self.start_button.place(relx=0.49, rely=0.5, anchor="center")
+            self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
+            self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
+
+            self.help_button.place(relx=0.94, rely=0.16, anchor="center")
+            self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
 
         elif self.current_page == "diff":
             rice_bg = Image.open("images/Rice.jpg")
@@ -228,6 +250,11 @@ class Flagquiz:
             self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
             self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
             self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
+            self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
+            self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
+
+            self.help_button.place(relx=0.94, rely=0.16, anchor="center")
+            self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
 
 
 if __name__ == "__main__":
