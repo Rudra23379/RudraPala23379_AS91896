@@ -1,6 +1,11 @@
+
+
 import customtkinter as ctk
 from PIL import Image, ImageTk
-from CTkMessagebox import CTkMessagebox
+from tkinter import messagebox
+
+from unicodedata import digit
+
 
 # --------Starter page-------------------------
 class Flagquiz:
@@ -75,9 +80,13 @@ class Flagquiz:
         # Username return
         player_name = self.username.get().strip()
         if player_name in ("", "please enter your name here"):
-            print("please enter a vaild name")
             return
-
+        elif any(char in "!@#$%^&*()_-=+[]{};':?./\\|" for char in player_name):
+            print("please enter a valid name")
+            return
+        elif any(digit in '0123456789' for digit in player_name):
+            print("please enter a valid name")
+            return
         # Update page tracker
         self.current_page = "diff"
 
