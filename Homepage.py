@@ -1,23 +1,34 @@
-
-
 import customtkinter as ctk
 from PIL import Image, ImageTk
 from tkinter import messagebox
 
-from unicodedata import digit
-
-
 # --------Starter page-------------------------
 class Flagquiz:
     def __init__(self, root):
+
+        # page tracker
+        self.current_page = "starter"
+
+
+
+        self.current_question_index = 0
+        self.score = 0
+        self.selected_answer = None
+
+        self.questions = [
+            {"image": "images/flag_of_Canada.jpg", "options": ["Canada", "Red Cross", "Peru", "Japan"],
+             "correct": "Canada"},
+            {"image": "images/japan.jpg", "options": ["South Korea", "Palau", "Japan", "China"], "correct": "Japan"},
+            {"image": "images/france.jpg", "options": ["Italy", "France", "Russia", "Netherlands"],
+             "correct": "France"},
+        ]
 
         self.diff_image = None
         self.diff_page = None
         self.root = root
         self.root.after(0, lambda: root.state('zoomed'))
 
-        # page tracker
-        self.current_page = "starter"
+
 
         # Display dimensions
         self.screen_width = root.winfo_screenwidth()
@@ -30,7 +41,7 @@ class Flagquiz:
         self.bg_label = ctk.CTkLabel(root, image=self.bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # Title
+        # Background image
         root.title("My Flag Quiz")
         self.title_text = ctk.CTkLabel(self.bg_label, text="Welcome To My Flag Quiz",
                                        font=("CanvaSans", 56, "bold"), text_color="#1a5c3a", fg_color="transparent",
@@ -39,35 +50,41 @@ class Flagquiz:
 
         # Quit button
         self.quit_button = ctk.CTkButton(self.bg_label, text="Quit", command=root.quit,
-                                    text_color="#ffffff", corner_radius=27, width=160,
-                                    height=40, bg_color="#c8e690", border_width=0,
-                                    font=("CanvaSans", 22, "bold"), fg_color="#2d6349")
+                                         text_color="#ffffff", corner_radius=27, width=160,
+                                         height=40, bg_color="#c8e690", border_width=0,
+                                         font=("CanvaSans", 22, "bold"), fg_color="#2d6349")
         self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
+
 
         # Quiz button icon
         self.quit_icon = ctk.CTkButton(self.bg_label, text="⏻", width=64, height=64, corner_radius=32,
-                                  command=root.quit, font=("CanvaSans", 36, "bold"),
-                                  bg_color="#c8e690", hover_color="#ffffff", fg_color="#2d6349")
+                                       command=root.quit, font=("CanvaSans", 36, "bold"),
+                                       bg_color="#c8e690", hover_color="#ffffff", fg_color="#1a3b2c")
         self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
+
 
         # Help button icon
         self.help_icon = ctk.CTkButton(self.bg_label, text=" ? ", width=64, height=64, corner_radius=32,
-                                  font=("CanvaSans", 36, "bold"), bg_color="#c8e690", hover_color="#ffffff",
-                                  fg_color="#2d6349", command=self.help_page)
+                                       font=("CanvaSans", 36, "bold"), bg_color="#c8e690", hover_color="#ffffff",
+                                       fg_color="#1a3b2c", command=self.help_page)
         self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
+
 
         # Help button
         self.help_button = ctk.CTkButton(self.bg_label, text="Help", bg_color="#c8e690", hover_color="#ffffff",
-                                    fg_color="#2d6349", font=("CanvaSans", 22, "bold"), corner_radius=32, width=160,
-                                    height=40,
-                                    command=self.help_page)
+                                         fg_color="#2d6349", font=("CanvaSans", 22, "bold"), corner_radius=32,
+                                         width=160,
+                                         height=40,
+                                         command=self.help_page)
         self.help_button.place(relx=0.94, rely=0.16, anchor="center")
+
 
         # Username Input
         self.username = ctk.CTkEntry(self.bg_label, placeholder_text="please enter your name here",
                                      width=320, height=50, justify="center", corner_radius=32, text_color="#ffffff",
                                      placeholder_text_color="#ffffff", fg_color="#2d6349", bg_color="#0b3835")
         self.username.place(relx=0.5, rely=0.7, anchor="center")
+
 
         # Start button
         self.start_button = ctk.CTkButton(self.bg_label, text="start", corner_radius=32, width=220, height=70,
@@ -76,7 +93,6 @@ class Flagquiz:
                                           command=self.diff)
         self.start_button.place(relx=0.49, rely=0.5, anchor="center")
 
-    def diff(self):
         # Username return
         player_name = self.username.get().strip()
         if player_name in ("", "please enter your name here"):
@@ -87,13 +103,16 @@ class Flagquiz:
         elif any(digit in '0123456789' for digit in player_name):
             print("please enter a valid name")
             return
+
         # Update page tracker
         self.current_page = "diff"
+
 
         # Unpacking starter page widgets
         self.title_text.place_forget()
         self.username.place_forget()
         self.start_button.place_forget()
+
 
         # New background image
         rice_bg = Image.open("images/Rice.jpg")
@@ -101,38 +120,120 @@ class Flagquiz:
                                        size=(self.screen_width, self.screen_height))
         self.bg_label.configure(image=self.diff_image)
 
+
         # Show difficulty options
         self.easy_button = ctk.CTkButton(self.bg_label, text="Easy", width=180, height=250, corner_radius=32,
                                          font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
                                          command=lambda: self.start_quiz("Easy"))
         self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
+
+
         self.medium_button = ctk.CTkButton(self.bg_label, text="Medium", width=180, height=250, corner_radius=32,
                                            font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
                                            command=lambda: self.start_quiz("Medium"))
         self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
+
+
 
         self.hard_button = ctk.CTkButton(self.bg_label, text="Hard", width=180, height=250, corner_radius=32,
                                          font=("CanvaSans", 28, "bold"), fg_color="#1a7556",
                                          command=lambda: self.start_quiz("Hard"))
         self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
 
+
+
     def start_quiz(self, difficulty):
-        print(f"Starting quiz on {difficulty} mode")
+        self.current_page = "quiz"
+        self.current_question_index = 0
+        self.score = 0
+
         self.easy_button.place_forget()
         self.medium_button.place_forget()
         self.hard_button.place_forget()
 
+        self.quiz_title = ctk.CTkLabel(self.bg_label, text="Which Country's Flag Is This?",
+                                       font=("CanvaSans", 42, "bold"), text_color="#1a5156",
+                                       fg_color="transparent")
+        self.quiz_title.place(relx=0.5, rely=0.15, anchor="center")
+
+        self.question_tracker = ctk.CTkLabel(self.bg_label, text="", font=("CanvaSans", 26, "bold"),
+                                             text_color="#ffffff", fg_color="#1a5156", corner_radius=20,
+                                             width=220, height=50)
+        self.question_tracker.place(relx=0.1, rely=0.92, anchor="center")
+
+        self.flag_display = ctk.CTkLabel(self.bg_label, text="", width=480, height=300,
+                                         fg_color="#475d5b", corner_radius=0)
+        self.flag_display.place(relx=0.28, rely=0.5, anchor="center")
+
+
+
+        self.option_buttons = []
+        for i in range(4):
+            btn = ctk.CTkButton(self.bg_label, text="", width=380, height=60, corner_radius=32,
+                                font=("CanvaSans", 20, "bold"), fg_color="#1a5156", text_color="#ffffff",
+                                hover_color="#2d6349")
+            btn.place(relx=0.65, rely=0.35 + (i * 0.12), anchor="center")
+            self.option_buttons.append(btn)
+
+        self.next_button = ctk.CTkButton(self.bg_label, text="Next", width=160, height=50, corner_radius=25,
+                                         font=("CanvaSans", 22, "bold"), fg_color="#1a5156", state="disabled",
+                                         command=self.next_question)
+        self.next_button.place(relx=0.65, rely=0.88, anchor="center")
+
+        self.load_question()
+
+    def load_question(self):
+        self.selected_answer = None
+        self.next_button.configure(state="disabled", fg_color="#1a5156")
+
+        q_data = self.questions[self.current_question_index]
+
+        self.question_tracker.configure(text=f"Question {self.current_question_index + 1}/{len(self.questions)}")
+
+        try:
+            flag_img = Image.open(q_data["image"])
+            ctk_flag = ctk.CTkImage(light_image=flag_img, dark_image=flag_img, size=(480, 300))
+            self.flag_display.configure(image=ctk_flag, text="")
+            self.flag_display._image = ctk_flag
+        except FileNotFoundError:
+            self.flag_display.configure(image="", text=f"[ Flag Asset Missing:\n{q_data['image']} ]",
+                                        font=("CanvaSans", 18, "bold"), text_color="#ffffff")
+
+        for i, option in enumerate(q_data["options"]):
+            self.option_buttons[i].configure(
+                text=option,
+                fg_color="#1a5156",
+                text_color="#ffffff",
+                command=lambda opt=option, btn=self.option_buttons[i]: self.select_option(opt, btn)
+            )
+
+    def select_option(self, chosen_text, clicked_button):
+        self.selected_answer = chosen_text
+
+        for btn in self.option_buttons:
+            btn.configure(fg_color="#1a5156", text_color="#ffffff")
+
+        clicked_button.configure(fg_color="#ffffff", text_color="#1a5156")
+
+        self.next_button.configure(state="normal")
+
+    def next_question(self):
+        q_data = self.questions[self.current_question_index]
+
+        if self.selected_answer == q_data["correct"]:
+            self.score += 1
+
+        self.current_question_index += 1
+
+
+
+
+
+
+
     #  help page
     def help_page(self):
-        # Hide whichever page layout elements are currently active
-
-        # Hide Help/Quit buttons
-        self.help_button.place_forget()
-        self.help_icon.place_forget()
-        self.quit_button.place_forget()
-        self.quit_icon.place_forget()
-
         if self.current_page == "starter":
             self.title_text.place_forget()
             self.username.place_forget()
@@ -141,17 +242,22 @@ class Flagquiz:
             self.easy_button.place_forget()
             self.medium_button.place_forget()
             self.hard_button.place_forget()
+        elif self.current_page == "quiz":
+            self.quiz_title.place_forget()
+            self.question_tracker.place_forget()
+            self.flag_display.place_forget()
+            self.next_button.place_forget()
+            for btn in self.option_buttons:
+                btn.place_forget()
 
-        # Change background configuration to match the dark color mockup
-        self.bg_label.configure(image="", fg_color="#134e4a")
+        self.bg_label.configure(image="", fg_color="#1d4d4f")
 
         # Add "How to play" title
-        self.help_title = ctk.CTkLabel(self.bg_label, text="How to play",
+        self.help_title = ctk.CTkLabel(self.bg_label, text="How To Play",
                                        font=("CanvaSans", 56, "bold"), text_color="#ffffff")
-        self.help_title.place(relx=0.5, rely=0.13, anchor="center")
+        self.help_title.place(relx=0.5, rely=0.15, anchor="center")
 
         # Help page text
-
         # Bullet 1
         self.rule1_header = ctk.CTkLabel(self.bg_label, text="• Identify the Flag:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
@@ -200,7 +306,8 @@ class Flagquiz:
         self.rule6_header = ctk.CTkLabel(self.bg_label, text="• Selecting an Answer:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
         self.rule6_header.place(relx=0.5, rely=0.32, anchor="center")
-        self.rule6_body = ctk.CTkLabel(self.bg_label, text="When you click an option, the button will change colour to show your selection has been registered.",
+        self.rule6_body = ctk.CTkLabel(self.bg_label,
+                                       text="When you click an option, the button will change colour to show your selection has been registered.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
         self.rule6_body.place(relx=0.5, rely=0.36, anchor="center")
 
@@ -213,6 +320,9 @@ class Flagquiz:
 
 
 
+
+
+        # Clear all instructions from active memory
     # return from help screen
     def close_help(self):
         # Clean up rules page components
@@ -234,6 +344,7 @@ class Flagquiz:
         self.rule6_body.place_forget()
 
 
+
         # Restore the exact layout the user came from
         if self.current_page == "starter":
             self.bg_image = Image.open("images/firewatch.jpg")
@@ -244,11 +355,6 @@ class Flagquiz:
             self.title_text.place(relx=0.46, rely=0.15, anchor="center")
             self.username.place(relx=0.5, rely=0.7, anchor="center")
             self.start_button.place(relx=0.49, rely=0.5, anchor="center")
-            self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
-            self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
-
-            self.help_button.place(relx=0.94, rely=0.16, anchor="center")
-            self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
 
         elif self.current_page == "diff":
             rice_bg = Image.open("images/Rice.jpg")
@@ -259,11 +365,20 @@ class Flagquiz:
             self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
             self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
             self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
-            self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
-            self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
 
-            self.help_button.place(relx=0.94, rely=0.16, anchor="center")
-            self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
+        elif self.current_page == "quiz":
+            rice_bg = Image.open("images/Rice.jpg")
+            self.diff_image = ctk.CTkImage(light_image=rice_bg, dark_image=rice_bg,
+                                           size=(self.screen_width, self.screen_height))
+            self.bg_label.configure(image=self.diff_image)
+
+            self.quiz_title.place(relx=0.5, rely=0.15, anchor="center")
+            self.question_tracker.place(relx=0.1, rely=0.92, anchor="center")
+            self.flag_display.place(relx=0.28, rely=0.5, anchor="center")
+            self.next_button.place(relx=0.65, rely=0.88, anchor="center")
+
+            for i, btn in enumerate(self.option_buttons):
+                btn.place(relx=0.65, rely=0.35 + (i * 0.12), anchor="center")
 
 
 if __name__ == "__main__":
