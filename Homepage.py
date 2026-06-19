@@ -93,16 +93,14 @@ class Flagquiz:
                                           command=self.diff)
         self.start_button.place(relx=0.49, rely=0.5, anchor="center")
 
+
         # Username return
+    def diff(self):
         player_name = self.username.get().strip()
         if player_name in ("", "please enter your name here"):
+            print("please enter a vaild name")
             return
-        elif any(char in "!@#$%^&*()_-=+[]{};':?./\\|" for char in player_name):
-            print("please enter a valid name")
-            return
-        elif any(digit in '0123456789' for digit in player_name):
-            print("please enter a valid name")
-            return
+
 
         # Update page tracker
         self.current_page = "diff"
