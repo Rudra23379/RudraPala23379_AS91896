@@ -16,11 +16,11 @@ class Flagquiz:
         self.selected_answer = None
 
         self.questions = [
-            {"image": "images/flag_of_Canada.jpg", "options": ["Canada", "Red Cross", "Peru", "Japan"],
-             "correct": "Canada"},
+            {"image": "images/Flag_of_Canada.png", "options": ["Canada", "Red Cross", "Peru", "Japan"],"correct": "Canada"},
             {"image": "images/japan.jpg", "options": ["South Korea", "Palau", "Japan", "China"], "correct": "Japan"},
-            {"image": "images/france.jpg", "options": ["Italy", "France", "Russia", "Netherlands"],
-             "correct": "France"},
+            {"image": "images/Flag_of_France.png", "options": ["Italy", "France", "Russia", "Netherlands"],"correct": "France"},
+            {"image": "images/Flag_of_France.png", "options": ["Italy", "France", "Russia", "Netherlands"],"correct": "France"},
+
         ]
 
         self.diff_image = None
@@ -93,12 +93,15 @@ class Flagquiz:
                                           command=self.diff)
         self.start_button.place(relx=0.49, rely=0.5, anchor="center")
 
-
         # Username return
-    def diff(self):
         player_name = self.username.get().strip()
         if player_name in ("", "please enter your name here"):
-            print("please enter a vaild name")
+            return
+        elif any(char in "!@#$%^&*()_-=+[]{};':?./\\|" for char in player_name):
+            print("please enter a valid name")
+            return
+        elif any(digit in '0123456789' for digit in player_name):
+            print("please enter a valid name")
             return
 
 
@@ -224,7 +227,61 @@ class Flagquiz:
 
         self.current_question_index += 1
 
+        if self.current_question_index < len(self.questions):
+            self.load_question()
+        else:
+            self.show_results()
 
+    def show_results(self):
+        self.quiz_title.place_forget()
+        self.question_tracker.place_forget()
+        self.flag_display.place_forget()
+        self.next_button.place_forget()
+        for btn in self.option_buttons:
+            btn.place_forget()
+
+        self.current_page = "results"
+
+        self.results_title = ctk.CTkLabel(self.bg_label, text="Quiz Completed!",
+                                          font=("CanvaSans", 56, "bold"), text_color="#1a5c3a",
+                                          bg_color="#c8e690", corner_radius=16)
+        self.results_title.place(relx=0.5, rely=0.3, anchor="center")
+
+        percentage = int((self.score / len(self.questions)) * 100)
+        score_text = f"Your Score: {self.score} / {len(self.questions)}\n\nAccuracy: {percentage}%"
+
+        self.score_display = ctk.CTkLabel(self.bg_label, text=score_text, font=("CanvaSans", 26, "bold"),
+                                          text_color="#ffffff", fg_color="#134e4a", width=500, height=180,
+                                          corner_radius=32)
+        self.score_display.place(relx=0.5, rely=0.52, anchor="center")
+
+        self.restart_button = ctk.CTkButton(self.bg_label, text="Return to Main Menu", corner_radius=32,
+                                            width=320, height=60, fg_color="#2d6349", hover_color="#ffffff",
+                                            text_color="#ffffff", font=("CanvaSans", 22, "bold"),
+                                            command=self.return_to_menu)
+        self.restart_button.place(relx=0.5, rely=0.76, anchor="center")
+
+   # Go back to the Title screen
+    def return_to_menu(self):
+        self.results_title.place_forget()
+        self.score_display.place_forget()
+        self.restart_button.place_forget()
+
+        self.current_page = "starter"
+
+        self.bg_image = Image.open("images/firewatch.jpg")
+        self.bg_image = ctk.CTkImage(light_image=self.bg_image, dark_image=self.bg_image,
+                                     size=(self.screen_width, self.screen_height))
+        self.bg_label.configure(image=self.bg_image)
+
+        self.title_text.place(relx=0.46, rely=0.15, anchor="center")
+        self.username.place(relx=0.5, rely=0.7, anchor="center")
+        self.start_button.place(relx=0.49, rely=0.5, anchor="center")
+
+        self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
+        self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
+        self.help_button.place(relx=0.94, rely=0.16, anchor="center")
+        self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
 
 
 
