@@ -14,6 +14,11 @@ class Flagquiz:
         self.current_question_index = 0
         self.score = 0
         self.selected_answer = None
+        #timer tracking values
+        self.time_left = 0
+        self.timer_id = None
+        self.difficulty = None
+        self.timer_label = None
 
         self.questions = [
             {"image": "images/Flag_of_Canada.png", "options": ["Canada", "Red Cross", "Peru", "Japan"],"correct": "Canada"},
@@ -93,15 +98,19 @@ class Flagquiz:
                                           command=self.diff)
         self.start_button.place(relx=0.49, rely=0.5, anchor="center")
 
+
+    def diff(self):
+
         # Username return
         player_name = self.username.get().strip()
         if player_name in ("", "please enter your name here"):
+            messagebox.showerror("Required", "Please enter your name to start the quiz!")
             return
-        elif any(char in "!@#$%^&*()_-=+[]{};':?./\\|" for char in player_name):
-            print("please enter a valid name")
+        elif any(char in "!@#$%^&*()_-=+[]{};':?./\\|''" for char in player_name):
+            messagebox.showerror("Invalid Name", "Your name cannot contain symbols!")
             return
         elif any(digit in '0123456789' for digit in player_name):
-            print("please enter a valid name")
+            messagebox.showerror("Invalid Name", "Your name cannot contain numbers!")
             return
 
 
@@ -155,8 +164,8 @@ class Flagquiz:
 
         self.quiz_title = ctk.CTkLabel(self.bg_label, text="Which Country's Flag Is This?",
                                        font=("CanvaSans", 42, "bold"), text_color="#1a5156",
-                                       fg_color="transparent")
-        self.quiz_title.place(relx=0.5, rely=0.15, anchor="center")
+                                       fg_color="#face4c")
+        self.quiz_title.place(relx=0.5, rely=0.1, anchor="center")
 
         self.question_tracker = ctk.CTkLabel(self.bg_label, text="", font=("CanvaSans", 26, "bold"),
                                              text_color="#ffffff", fg_color="#1a5156", corner_radius=20,
@@ -182,32 +191,65 @@ class Flagquiz:
                                          command=self.next_question)
         self.next_button.place(relx=0.65, rely=0.88, anchor="center")
 
+        # Track chosen difficulty
+        self.difficulty = difficulty
+
+        # Timer circle display
+        self.timer_label = ctk.CTkLabel(self.bg_label, text="", font=("CanvaSans", 32, "bold"),
+                                        text_color="#ffffff", fg_color="#1a3b2c", corner_radius=35,
+                                        width=70, height=70)
+
         self.load_question()
 
     def load_question(self):
         self.selected_answer = None
         self.next_button.configure(state="disabled", fg_color="#1a5156")
 
-        q_data = self.questions[self.current_question_index]
+        quiz_questions = self.questions[self.current_question_index]
 
         self.question_tracker.configure(text=f"Question {self.current_question_index + 1}/{len(self.questions)}")
 
+        # Text incase the image doesn't load
         try:
-            flag_img = Image.open(q_data["image"])
+            flag_img = Image.open(quiz_questions["image"])
             ctk_flag = ctk.CTkImage(light_image=flag_img, dark_image=flag_img, size=(480, 300))
             self.flag_display.configure(image=ctk_flag, text="")
             self.flag_display._image = ctk_flag
         except FileNotFoundError:
-            self.flag_display.configure(image="", text=f"[ Flag Asset Missing:\n{q_data['image']} ]",
+            self.flag_display.configure(image="", text=f"[ Flag Asset Missing:\n{quiz_questions['image']} ]",
                                         font=("CanvaSans", 18, "bold"), text_color="#ffffff")
 
-        for i, option in enumerate(q_data["options"]):
+        #Question label
+        for i, option in enumerate(quiz_questions["options"]):
             self.option_buttons[i].configure(
                 text=option,
                 fg_color="#1a5156",
                 text_color="#ffffff",
                 command=lambda opt=option, btn=self.option_buttons[i]: self.select_option(opt, btn)
             )
+
+            # Reset and manage active timer loop strings
+            if self.timer_id:
+                self.root.after_cancel(self.timer_id)
+                self.timer_id = None
+
+            # Add countdown limits based on difficulty choice
+            if self.difficulty in ("Medium", "Hard"):
+                self.time_left = 10 if self.difficulty == "Medium" else 5
+                self.timer_label.configure(text=str(self.time_left))
+                self.timer_label.place(relx=0.9, rely=0.7, anchor="center")
+                self.start_timer_countdown()
+            else:
+                self.timer_label.place_forget()
+
+    def start_timer_countdown(self):
+        if self.time_left > 0:
+            self.time_left -= 1
+            self.timer_label.configure(text=str(self.time_left))
+            self.timer_id = self.root.after(1000, self.start_timer_countdown)
+        else:
+            messagebox.showinfo("Time's Up!", "You ran out of time for this question!")
+            self.next_question()
 
     def select_option(self, chosen_text, clicked_button):
         self.selected_answer = chosen_text
@@ -220,9 +262,9 @@ class Flagquiz:
         self.next_button.configure(state="normal")
 
     def next_question(self):
-        q_data = self.questions[self.current_question_index]
+        quiz_questions = self.questions[self.current_question_index]
 
-        if self.selected_answer == q_data["correct"]:
+        if self.selected_answer == quiz_questions["correct"]:
             self.score += 1
 
         self.current_question_index += 1
@@ -239,6 +281,10 @@ class Flagquiz:
         self.next_button.place_forget()
         for btn in self.option_buttons:
             btn.place_forget()
+        self.timer_label.place_forget()
+        if self.timer_id:
+            self.root.after_cancel(self.timer_id)
+            self.timer_id = None
 
         self.current_page = "results"
 
