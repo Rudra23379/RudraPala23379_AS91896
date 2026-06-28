@@ -164,8 +164,8 @@ class Flagquiz:
 
         self.quiz_title = ctk.CTkLabel(self.bg_label, text="Which Country's Flag Is This?",
                                        font=("CanvaSans", 42, "bold"), text_color="#1a5156",
-                                       fg_color="#face4c")
-        self.quiz_title.place(relx=0.5, rely=0.1, anchor="center")
+                                       fg_color="transparent")
+        self.quiz_title.place(relx=0.5, rely=0.15, anchor="center")
 
         self.question_tracker = ctk.CTkLabel(self.bg_label, text="", font=("CanvaSans", 26, "bold"),
                                              text_color="#ffffff", fg_color="#1a5156", corner_radius=20,
@@ -176,6 +176,13 @@ class Flagquiz:
                                          fg_color="#475d5b", corner_radius=0)
         self.flag_display.place(relx=0.28, rely=0.5, anchor="center")
 
+        # Hourglass image
+        self.hourglass_original = Image.open("images/hourglass.png")
+        self.hourglass_angle = 0
+
+
+        self.hourglass_label = ctk.CTkLabel(self.bg_label, text="")
+        self.hourglass_label.place(relx=0.9, rely=0.5, anchor="center")
 
 
         self.option_buttons = []
@@ -205,22 +212,22 @@ class Flagquiz:
         self.selected_answer = None
         self.next_button.configure(state="disabled", fg_color="#1a5156")
 
-        quiz_questions = self.questions[self.current_question_index]
+        q_data = self.questions[self.current_question_index]
 
         self.question_tracker.configure(text=f"Question {self.current_question_index + 1}/{len(self.questions)}")
 
         # Text incase the image doesn't load
         try:
-            flag_img = Image.open(quiz_questions["image"])
+            flag_img = Image.open(q_data["image"])
             ctk_flag = ctk.CTkImage(light_image=flag_img, dark_image=flag_img, size=(480, 300))
             self.flag_display.configure(image=ctk_flag, text="")
             self.flag_display._image = ctk_flag
         except FileNotFoundError:
-            self.flag_display.configure(image="", text=f"[ Flag Asset Missing:\n{quiz_questions['image']} ]",
+            self.flag_display.configure(image="", text=f"[ Flag Asset Missing:\n{q_data['image']} ]",
                                         font=("CanvaSans", 18, "bold"), text_color="#ffffff")
 
         #Question label
-        for i, option in enumerate(quiz_questions["options"]):
+        for i, option in enumerate(q_data["options"]):
             self.option_buttons[i].configure(
                 text=option,
                 fg_color="#1a5156",
@@ -243,13 +250,28 @@ class Flagquiz:
                 self.timer_label.place_forget()
 
     def start_timer_countdown(self):
-        if self.time_left > 0:
-            self.time_left -= 1
-            self.timer_label.configure(text=str(self.time_left))
-            self.timer_id = self.root.after(1000, self.start_timer_countdown)
-        else:
-            messagebox.showinfo("Time's Up!", "You ran out of time for this question!")
-            self.next_question()
+
+            if self.time_left > 0:
+
+                self.time_left -= 1
+                self.timer_label.configure(text=str(self.time_left))
+
+                #change the timer rotation
+                self.hourglass_angle = (self.hourglass_angle + 180) % 360
+
+                # 3. Rotate the original clean image and convert it to a CTkImage
+                rotated_img = self.hourglass_original.rotate(-self.hourglass_angle, resample=Image.BICUBIC)
+                ctk_hourglass = ctk.CTkImage(light_image=rotated_img, dark_image=rotated_img, size=(100, 100))
+
+                # 4. Display the newly rotated image
+                self.hourglass_label.configure(image=ctk_hourglass)
+                self.hourglass_label._image = ctk_hourglass
+
+                # 5. Loop again after 1 second
+                self.timer_id = self.root.after(1000, self.start_timer_countdown)
+            else:
+                messagebox.showinfo("Time's Up!", "You ran out of time for this question!")
+                self.next_question()
 
     def select_option(self, chosen_text, clicked_button):
         self.selected_answer = chosen_text
@@ -262,9 +284,9 @@ class Flagquiz:
         self.next_button.configure(state="normal")
 
     def next_question(self):
-        quiz_questions = self.questions[self.current_question_index]
+        q_data = self.questions[self.current_question_index]
 
-        if self.selected_answer == quiz_questions["correct"]:
+        if self.selected_answer == q_data["correct"]:
             self.score += 1
 
         self.current_question_index += 1
@@ -446,7 +468,7 @@ class Flagquiz:
 
 
 
-        # Restore the exact layout the user came from
+        # Restore the layout the user came from
         if self.current_page == "starter":
             self.bg_image = Image.open("images/firewatch.jpg")
             self.bg_image = ctk.CTkImage(light_image=self.bg_image, dark_image=self.bg_image,
