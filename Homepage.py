@@ -2,6 +2,7 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 from tkinter import messagebox
 
+
 # --------Starter page-------------------------
 class Flagquiz:
     def __init__(self, root):
@@ -9,31 +10,30 @@ class Flagquiz:
         # page tracker
         self.current_page = "starter"
 
-
-
         self.current_question_index = 0
         self.score = 0
         self.selected_answer = None
-        #timer tracking values
+
+        # timer tracking values
         self.time_left = 0
         self.timer_id = None
         self.difficulty = None
         self.timer_label = None
 
         self.questions = [
-            {"image": "images/Flag_of_Canada.png", "options": ["Canada", "Red Cross", "Peru", "Japan"],"correct": "Canada"},
+            {"image": "images/Flag_of_Canada.png", "options": ["Canada", "Red Cross", "Peru", "Japan"],
+             "correct": "Canada"},
             {"image": "images/japan.jpg", "options": ["South Korea", "Palau", "Japan", "China"], "correct": "Japan"},
-            {"image": "images/Flag_of_France.png", "options": ["Italy", "France", "Russia", "Netherlands"],"correct": "France"},
-            {"image": "images/Flag_of_France.png", "options": ["Italy", "France", "Russia", "Netherlands"],"correct": "France"},
-
+            {"image": "images/Flag_of_France.png", "options": ["Italy", "France", "Russia", "Netherlands"],
+             "correct": "France"},
+            {"image": "images/Flag_of_France.png", "options": ["Italy", "France", "Russia", "Netherlands"],
+             "correct": "France"},
         ]
 
         self.diff_image = None
         self.diff_page = None
         self.root = root
         self.root.after(0, lambda: root.state('zoomed'))
-
-
 
         # Display dimensions
         self.screen_width = root.winfo_screenwidth()
@@ -46,7 +46,7 @@ class Flagquiz:
         self.bg_label = ctk.CTkLabel(root, image=self.bg_image, text="")
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # Background image
+        # Background image text
         root.title("My Flag Quiz")
         self.title_text = ctk.CTkLabel(self.bg_label, text="Welcome To My Flag Quiz",
                                        font=("CanvaSans", 56, "bold"), text_color="#1a5c3a", fg_color="transparent",
@@ -60,20 +60,17 @@ class Flagquiz:
                                          font=("CanvaSans", 22, "bold"), fg_color="#2d6349")
         self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
 
-
         # Quiz button icon
         self.quit_icon = ctk.CTkButton(self.bg_label, text="⏻", width=64, height=64, corner_radius=32,
                                        command=root.quit, font=("CanvaSans", 36, "bold"),
                                        bg_color="#c8e690", hover_color="#ffffff", fg_color="#1a3b2c")
         self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
 
-
         # Help button icon
         self.help_icon = ctk.CTkButton(self.bg_label, text=" ? ", width=64, height=64, corner_radius=32,
                                        font=("CanvaSans", 36, "bold"), bg_color="#c8e690", hover_color="#ffffff",
                                        fg_color="#1a3b2c", command=self.help_page)
         self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
-
 
         # Help button
         self.help_button = ctk.CTkButton(self.bg_label, text="Help", bg_color="#c8e690", hover_color="#ffffff",
@@ -83,13 +80,11 @@ class Flagquiz:
                                          command=self.help_page)
         self.help_button.place(relx=0.94, rely=0.16, anchor="center")
 
-
         # Username Input
         self.username = ctk.CTkEntry(self.bg_label, placeholder_text="please enter your name here",
                                      width=320, height=50, justify="center", corner_radius=32, text_color="#ffffff",
                                      placeholder_text_color="#ffffff", fg_color="#2d6349", bg_color="#0b3835")
         self.username.place(relx=0.5, rely=0.7, anchor="center")
-
 
         # Start button
         self.start_button = ctk.CTkButton(self.bg_label, text="start", corner_radius=32, width=220, height=70,
@@ -98,9 +93,7 @@ class Flagquiz:
                                           command=self.diff)
         self.start_button.place(relx=0.49, rely=0.5, anchor="center")
 
-
     def diff(self):
-
         # Username return
         player_name = self.username.get().strip()
         if player_name in ("", "please enter your name here"):
@@ -113,16 +106,13 @@ class Flagquiz:
             messagebox.showerror("Invalid Name", "Your name cannot contain numbers!")
             return
 
-
         # Update page tracker
         self.current_page = "diff"
-
 
         # Unpacking starter page widgets
         self.title_text.place_forget()
         self.username.place_forget()
         self.start_button.place_forget()
-
 
         # New background image
         rice_bg = Image.open("images/Rice.jpg")
@@ -130,28 +120,21 @@ class Flagquiz:
                                        size=(self.screen_width, self.screen_height))
         self.bg_label.configure(image=self.diff_image)
 
-
         # Show difficulty options
         self.easy_button = ctk.CTkButton(self.bg_label, text="Easy", width=180, height=250, corner_radius=32,
                                          font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
                                          command=lambda: self.start_quiz("Easy"))
         self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
-
-
         self.medium_button = ctk.CTkButton(self.bg_label, text="Medium", width=180, height=250, corner_radius=32,
                                            font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
                                            command=lambda: self.start_quiz("Medium"))
         self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
 
-
-
         self.hard_button = ctk.CTkButton(self.bg_label, text="Hard", width=180, height=250, corner_radius=32,
                                          font=("CanvaSans", 28, "bold"), fg_color="#1a7556",
                                          command=lambda: self.start_quiz("Hard"))
         self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
-
-
 
     def start_quiz(self, difficulty):
         self.current_page = "quiz"
@@ -180,10 +163,19 @@ class Flagquiz:
         self.hourglass_original = Image.open("images/hourglass.png")
         self.hourglass_angle = 0
 
+        # hourglass label
+        self.hourglass_label = ctk.CTkLabel(
+            self.bg_label,
+            text="",
+            fg_color="#1a3b2c",
+            bg_color="#06464f",
+            width=120,
+            height=120,
+            corner_radius=35
+        )
 
         self.hourglass_label = ctk.CTkLabel(self.bg_label, text="")
         self.hourglass_label.place(relx=0.9, rely=0.5, anchor="center")
-
 
         self.option_buttons = []
         for i in range(4):
@@ -204,8 +196,7 @@ class Flagquiz:
         # Timer circle display
         self.timer_label = ctk.CTkLabel(self.bg_label, text="", font=("CanvaSans", 32, "bold"),
                                         text_color="#ffffff", fg_color="#1a3b2c", corner_radius=35,
-                                        width=70, height=70)
-
+                                        width=70, height=70, bg_color="#e1c814")
         self.load_question()
 
     def load_question(self):
@@ -226,7 +217,7 @@ class Flagquiz:
             self.flag_display.configure(image="", text=f"[ Flag Asset Missing:\n{q_data['image']} ]",
                                         font=("CanvaSans", 18, "bold"), text_color="#ffffff")
 
-        #Question label
+        # Question label
         for i, option in enumerate(q_data["options"]):
             self.option_buttons[i].configure(
                 text=option,
@@ -250,28 +241,26 @@ class Flagquiz:
                 self.timer_label.place_forget()
 
     def start_timer_countdown(self):
+        if self.time_left > 0:
+            self.time_left -= 1
+            self.timer_label.configure(text=str(self.time_left))
 
-            if self.time_left > 0:
+            # change the timer rotation
+            self.hourglass_angle = (self.hourglass_angle + 180) % 360
 
-                self.time_left -= 1
-                self.timer_label.configure(text=str(self.time_left))
+            #  Rotate the original clean image and convert it to a CTkImage
+            rotated_img = self.hourglass_original.rotate(-self.hourglass_angle, resample=Image.BICUBIC)
+            ctk_hourglass = ctk.CTkImage(light_image=rotated_img, dark_image=rotated_img, size=(100, 100))
 
-                #change the timer rotation
-                self.hourglass_angle = (self.hourglass_angle + 180) % 360
+            #  Display the newly rotated image
+            self.hourglass_label.configure(image=ctk_hourglass)
+            self.hourglass_label._image = ctk_hourglass
 
-                # 3. Rotate the original clean image and convert it to a CTkImage
-                rotated_img = self.hourglass_original.rotate(-self.hourglass_angle, resample=Image.BICUBIC)
-                ctk_hourglass = ctk.CTkImage(light_image=rotated_img, dark_image=rotated_img, size=(100, 100))
-
-                # 4. Display the newly rotated image
-                self.hourglass_label.configure(image=ctk_hourglass)
-                self.hourglass_label._image = ctk_hourglass
-
-                # 5. Loop again after 1 second
-                self.timer_id = self.root.after(1000, self.start_timer_countdown)
-            else:
-                messagebox.showinfo("Time's Up!", "You ran out of time for this question!")
-                self.next_question()
+            #  Loop again after 1 second
+            self.timer_id = self.root.after(1000, self.start_timer_countdown)
+        else:
+            messagebox.showinfo("Time's Up!", "You ran out of time for this question!")
+            self.next_question()
 
     def select_option(self, chosen_text, clicked_button):
         self.selected_answer = chosen_text
@@ -304,18 +293,35 @@ class Flagquiz:
         for btn in self.option_buttons:
             btn.place_forget()
         self.timer_label.place_forget()
+
         if self.timer_id:
             self.root.after_cancel(self.timer_id)
             self.timer_id = None
 
         self.current_page = "results"
 
-        self.results_title = ctk.CTkLabel(self.bg_label, text="Quiz Completed!",
-                                          font=("CanvaSans", 56, "bold"), text_color="#1a5c3a",
-                                          bg_color="#c8e690", corner_radius=16)
-        self.results_title.place(relx=0.5, rely=0.3, anchor="center")
-
         percentage = int((self.score / len(self.questions)) * 100)
+
+        if percentage >= 50:
+            title_text = "You passed!"
+            title_color = "#ffffff"
+            bg_results = "images/win.jpg"
+        else:
+            title_text = "You failed!"
+            title_color = "#e17055"
+            bg_results = "images/lose.jpg"
+
+        self.bg_image = Image.open(bg_results)
+        self.result_image = ctk.CTkImage(light_image=self.bg_image, dark_image=self.bg_image,
+                                         size=(self.screen_width, self.screen_height))
+        self.bg_label.configure(image=self.result_image)
+
+        self.results_title = ctk.CTkLabel(self.bg_label, text=title_text,
+                                          font=("CanvaSans", 64, "bold"),
+                                          text_color=title_color,
+                                          fg_color="transparent")
+        self.results_title.place(relx=0.5, rely=0.18, anchor="center")
+
         score_text = f"Your Score: {self.score} / {len(self.questions)}\n\nAccuracy: {percentage}%"
 
         self.score_display = ctk.CTkLabel(self.bg_label, text=score_text, font=("CanvaSans", 26, "bold"),
@@ -323,17 +329,11 @@ class Flagquiz:
                                           corner_radius=32)
         self.score_display.place(relx=0.5, rely=0.52, anchor="center")
 
-        self.restart_button = ctk.CTkButton(self.bg_label, text="Return to Main Menu", corner_radius=32,
-                                            width=320, height=60, fg_color="#2d6349", hover_color="#ffffff",
-                                            text_color="#ffffff", font=("CanvaSans", 22, "bold"),
-                                            command=self.return_to_menu)
-        self.restart_button.place(relx=0.5, rely=0.76, anchor="center")
-
-   # Go back to the Title screen
+    # Go back to the Title screen
     def return_to_menu(self):
         self.results_title.place_forget()
         self.score_display.place_forget()
-        self.restart_button.place_forget()
+        # self.restart_button.place_forget() # NOTE: You don't have a self.restart_button defined!
 
         self.current_page = "starter"
 
@@ -351,11 +351,7 @@ class Flagquiz:
         self.help_button.place(relx=0.94, rely=0.16, anchor="center")
         self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
 
-
-
-
-
-    #  help page
+    # help page
     def help_page(self):
         if self.current_page == "starter":
             self.title_text.place_forget()
@@ -389,7 +385,6 @@ class Flagquiz:
                                        text="Look at the image in the center and choose the correct country from the four options.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
         self.rule1_body.place(relx=0.5, rely=0.25, anchor="center")
-
         # Bullet 3
         self.rule2_header = ctk.CTkLabel(self.bg_label, text="• Watch the Timer:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
@@ -398,7 +393,6 @@ class Flagquiz:
                                        text="Depending on your difficulty, you will have unlimited time, 10 seconds or 5 seconds to answer.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
         self.rule2_body.place(relx=0.5, rely=0.47, anchor="center")
-
         # Bullet 4
         self.rule3_header = ctk.CTkLabel(self.bg_label, text="• Navigation:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
@@ -406,7 +400,6 @@ class Flagquiz:
         self.rule3_body = ctk.CTkLabel(self.bg_label, text="Use the Next button to move forward.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
         self.rule3_body.place(relx=0.5, rely=0.58, anchor="center")
-
         # Bullet 5
         self.rule4_header = ctk.CTkLabel(self.bg_label, text="• Quit Anytime:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
@@ -415,7 +408,6 @@ class Flagquiz:
                                        text="If you need to stop, just hit the Power icon in the top left.",
                                        font=("CanvaSans", 20), text_color="#ffffff")
         self.rule4_body.place(relx=0.5, rely=0.69, anchor="center")
-
         # Bullet 6
         self.rule5_header = ctk.CTkLabel(self.bg_label, text="• Score System:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
@@ -425,7 +417,6 @@ class Flagquiz:
                                        font=("CanvaSans", 20), text_color="#ffffff")
         self.rule5_body.place(relx=0.5, rely=0.8, anchor="center")
         # Bullet 2
-
         self.rule6_header = ctk.CTkLabel(self.bg_label, text="• Selecting an Answer:", font=("CanvaSans", 24, "bold"),
                                          text_color="#ffffff")
         self.rule6_header.place(relx=0.5, rely=0.32, anchor="center")
@@ -441,11 +432,6 @@ class Flagquiz:
                                          command=self.close_help)
         self.back_button.place(relx=0.5, rely=0.9, anchor="center")
 
-
-
-
-
-        # Clear all instructions from active memory
     # return from help screen
     def close_help(self):
         # Clean up rules page components
@@ -465,8 +451,6 @@ class Flagquiz:
         self.rule5_body.place_forget()
         self.rule6_header.place_forget()
         self.rule6_body.place_forget()
-
-
 
         # Restore the layout the user came from
         if self.current_page == "starter":
