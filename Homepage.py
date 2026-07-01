@@ -169,6 +169,20 @@ class Flagquiz:
             text="",
             fg_color="#1a3b2c",
             bg_color="#06464f",
+            width=150,
+            height=150,
+            corner_radius=60
+        )
+
+
+        self.hourglass_label.place(relx=0.9, rely=0.5, anchor="center")
+
+        # hourglass label
+        self.hourglass_label = ctk.CTkLabel(
+            self.bg_label,
+            text="",
+            fg_color="#1a3b2c",
+            bg_color="#06464f",
             width=120,
             height=120,
             corner_radius=35
@@ -333,7 +347,7 @@ class Flagquiz:
     def return_to_menu(self):
         self.results_title.place_forget()
         self.score_display.place_forget()
-        # self.restart_button.place_forget() # NOTE: You don't have a self.restart_button defined!
+
 
         self.current_page = "starter"
 
