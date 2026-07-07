@@ -399,8 +399,8 @@ class Flagquiz:
            feedback_text = f"Nice try {self.username.get()}, you scored {self.score}/{len(self.questions)}"
 
 
-        # Display score for the user
-       self.score_display = ctk.CTkLabel(self.bg_label, text=feedback_text,
+          # Display score for the user
+           self.score_display = ctk.CTkLabel(self.bg_label, text=feedback_text,
                                          font=("CanvaSans", 26, "bold"),
                                          text_color="#ffffff",
                                          fg_color="#134e4a",
