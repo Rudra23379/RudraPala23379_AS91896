@@ -22,30 +22,30 @@ class Flagquiz:
        self.difficulty = None
        self.timer_label = None
 
-        # Question bank
+       # Question bank
        self.questions = [
            {"image": "flags/Flag_of_Canada.png", "options": ["Canada", "Red Cross", "Peru", "Japan"],"correct": "Canada"},
            {"image": "flags/japan.jpg", "options": ["South Korea", "Palau", "Japan", "China"], "correct": "Japan"},
            {"image": "flags/Flag_of_France.png", "options": ["Italy", "France", "Russia", "Netherlands"],"correct": "France"},
-           {"image": "flags/United_kingdom.jpg", "options": ["United Kingdom", "Australia", "New Zealand", "Iceland"],"correct": "United Kingdom"},
+           {"image": "flags/United_Kingdom.jpg", "options": ["United Kingdom", "Australia", "New Zealand", "Iceland"],"correct": "United Kingdom"},
            {"image": "flags/USA.png", "options": ["Liberia", "Malaysia", "United States", "Puerto Rico"],"correct": "United States"},
            {"image": "flags/Flag_of_Germany.png", "options": ["Belgium", "Germany", "Austria", "Armenia"],"correct": "Germany"},
            {"image": "flags/Flag_of_Italy.png", "options": ["Mexico", "Ireland", "Italy", "Hungary"],"correct": "Italy"},
            {"image": "flags/Flag_of_Brazil.png", "options": ["Argentina", "Colombia", "Brazil", "Jamaica"],"correct": "Brazil"},
            {"image": "flags/Flag_of_Australia.png", "options": ["New Zealand", "Australia", "United Kingdom", "Fiji"],"correct": "Australia"},
            {"image": "flags/Flag_of_India.png", "options": ["India", "Niger", "Ireland", "Pakistan"],"correct": "India"},
-           {"image": "flags/Flag-South-Korea.png", "options": ["Japan", "China", "South Korea", "Thailand"], "correct": "South Korea"},
+           {"image": "flags/Flag-South-Korea.png", "options": ["Japan", "China", "South Korea", "Thailand"],"correct": "South Korea"},
            {"image": "flags/Flag_of_Mexico.png", "options": ["Italy", "Mexico", "Spain", "Guatemala"],"correct": "Mexico"},
-           {"image": "flags/Flag-South_Africa.png", "options": ["Jamaica", "Kenya", "Ghana", "South Africa"], "correct": "South Africa"},
+           {"image": "flags/Flag-South-Africa.png", "options": ["Jamaica", "Kenya", "Ghana", "South Africa"],"correct": "South Africa"},
            {"image": "flags/Flag_of_Argentina.png", "options": ["Uruguay", "Argentina", "Honduras", "Greece"],"correct": "Argentina"},
-           {"image": "flags/spain.png", "options": ["Portugal", "Spain", "France", "Andorra"],"correct": "Spain"},
-           {"image": "flags/Egypt.png", "options": ["Syria", "Iraq", "Yemen", "Egypt"], "correct": "Egypt"},
+           {"image": "flags/spain.png", "options": ["Portugal", "Spain", "France", "Andorra"], "correct": "Spain"},
            {"image": "flags/FlagGreece.png", "options": ["Greece", "Finland", "Cyprus", "Israel"], "correct": "Greece"},
-           {"image": "flags/FlagChina.png", "options": ["Vietnam", "China", "Taiwan", "Singapore"],"correct": "China"},
+           {"image": "flags/FlagChina.png", "options": ["Vietnam", "China", "Taiwan", "Singapore"], "correct": "China"},
            {"image": "flags/FlagSweden.png", "options": ["Norway", "Denmark", "Sweden", "Iceland"],"correct": "Sweden"},
            {"image": "flags/Flag_of_New_Zealand.png","options": ["Australia", "New Zealand", "United Kingdom", "Tuvalu"], "correct": "New Zealand"}
 
        ]
+
        #UI window scaling
        self.diff_image = None
        self.diff_page = None
@@ -55,6 +55,7 @@ class Flagquiz:
        # Display dimensions
        self.screen_width = root.winfo_screenwidth()
        self.screen_height = root.winfo_screenheight()
+
 
        # Background image
        self.bg_image = Image.open("images/firewatch.jpg")
@@ -72,11 +73,10 @@ class Flagquiz:
 
 
        # Quit button
-       self.quit_button = ctk.CTkButton(self.bg_label, text="Quit", bg_color="#c8e690", hover_color="#ffffff",
-                                        fg_color="#2d6349", font=("CanvaSans", 22, "bold"), corner_radius=32,
-                                        width=160,
-                                        height=40,
-                                        command=root.quit)
+       self.quit_button = ctk.CTkButton(self.bg_label, text="Quit", command=root.quit,
+                                        text_color="#ffffff", corner_radius=27, width=160,
+                                        height=40, bg_color="#c8e690", border_width=0,
+                                        font=("CanvaSans", 22, "bold"), fg_color="#2d6349")
        self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
 
 
@@ -121,7 +121,7 @@ class Flagquiz:
    def diff(self):
 
 
-       # Username return
+       # Username Validation
        player_name = self.username.get().strip()
        if player_name in ("", "please enter your name here"):
            messagebox.showerror("Required", "Please enter your name to start the quiz!")
@@ -216,8 +216,7 @@ class Flagquiz:
            bg_color="#06464f",
            width=150,
            height=150,
-           corner_radius=60
-       )
+           corner_radius=60)
 
        self.hourglass_label.place(relx=0.9, rely=0.5, anchor="center")
 
@@ -244,7 +243,7 @@ class Flagquiz:
        # Timer circle display
        self.timer_label = ctk.CTkLabel(self.bg_label, text="", font=("CanvaSans", 32, "bold"),
                                        text_color="#ffffff", fg_color="#1a3b2c", corner_radius=35,
-                                       width=70, height=70, bg_color="#e1c814")
+                                       width=70, height=70)
 
       # To make my question data load
        self.load_question()
@@ -297,7 +296,7 @@ class Flagquiz:
            else:
                # hide the time if the user is on easy mode
                self.timer_label.place_forget()
-               self.hourglass_label.place_forget()
+
 
    def start_timer_countdown(self):
 
@@ -310,7 +309,7 @@ class Flagquiz:
                self.hourglass_angle = (self.hourglass_angle + 180) % 360
 
 
-                #Rotate the original clean image and convert it to a CTkImage
+                # Rotate the hourglass image
                rotated_img = self.hourglass_original.rotate(-self.hourglass_angle, resample=Image.BICUBIC)
                ctk_hourglass = ctk.CTkImage(light_image=rotated_img, dark_image=rotated_img, size=(100, 100))
 
@@ -363,6 +362,7 @@ class Flagquiz:
 
 
    def show_results(self):
+
        # hide my widgets from my quiz screen
        self.quiz_title.place_forget()
        self.question_tracker.place_forget()
@@ -379,13 +379,13 @@ class Flagquiz:
 
 
 
-
+       # page tracker
        self.current_page = "results"
 
-
+       # calculate the players final score percentage
        percentage = int((self.score / len(self.questions)) * 100)
 
-
+       # choose the correct results page from the player's score
        if percentage >= 50:
            title_text = "You passed!"
            title_color = "#ffffff"
@@ -398,11 +398,6 @@ class Flagquiz:
            feedback_text = f"Nice try {self.username.get()}, you scored {self.score}/{len(self.questions)}"
 
 
-       self.current_page = "results"
-
-
-
-
        self.score_display = ctk.CTkLabel(self.bg_label, text=feedback_text,
                                              font=("CanvaSans", 26, "bold"),
                                              text_color="#ffffff",
@@ -410,19 +405,17 @@ class Flagquiz:
                                              height=50,
                                              corner_radius=25)
 
-
        self.score_display.place(relx=0.5, rely=0.88, anchor="center")
 
 
-
+       # results screen background image size and place
        self.bg_image = Image.open(bg_results)
        self.result_image = ctk.CTkImage(light_image=self.bg_image, dark_image=self.bg_image,
                                             size=(self.screen_width, self.screen_height))
        self.bg_label.configure(image=self.result_image)
 
 
-
-
+       # Display the pass or fail title on the results screen
        self.results_title = ctk.CTkLabel(self.bg_label, text=title_text,
                                              font=("CanvaSans", 64, "bold"),
                                              text_color=title_color,
@@ -430,7 +423,7 @@ class Flagquiz:
        self.results_title.place(relx=0.5, rely=0.18, anchor="center")
 
 
-       # Quiz box if the user would like to quiz the quiz
+       # Quit box if the user would like to quiz the quiz
        self.quit_box = ctk.CTkButton(self.bg_label, text="No Thanks!\n\n(Quit program)",
                                      font=("CanvaSans", 22, "bold"), text_color="#ffffff",
                                      fg_color="#163333", hover_color="#ffffff",
@@ -463,10 +456,10 @@ class Flagquiz:
        self.results_title.place_forget()
        self.score_display.place_forget()
 
-
+       # page tracker
        self.current_page = "diff"
 
-
+       # Question page background image
        rice_bg = Image.open("images/Rice.jpg")
        self.diff_image = ctk.CTkImage(light_image=rice_bg, dark_image=rice_bg,
                                       size=(self.screen_width, self.screen_height))
@@ -474,22 +467,27 @@ class Flagquiz:
 
 
        # Show difficulty options
+       # easy difficulty
        self.easy_button = ctk.CTkButton(self.bg_label, text="Easy", width=180, height=250, corner_radius=32,
                                         font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
                                         command=lambda: self.start_quiz("Easy"))
        self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
-
+       # medium difficulty
        self.medium_button = ctk.CTkButton(self.bg_label, text="Medium", width=180, height=250, corner_radius=32,
                                           font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
                                           command=lambda: self.start_quiz("Medium"))
        self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
 
-
+       # hard difficulty
        self.hard_button = ctk.CTkButton(self.bg_label, text="Hard", width=180, height=250, corner_radius=32,
                                         font=("CanvaSans", 28, "bold"), fg_color="#1a7556",
                                         command=lambda: self.start_quiz("Hard"))
        self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
+
+
+
+
 
 
    #  help page
@@ -499,6 +497,7 @@ class Flagquiz:
            return
        self._help_page_open = True
 
+       # Hide the current page
        if self.current_page == "starter":
            self.title_text.place_forget()
            self.username.place_forget()
@@ -517,14 +516,16 @@ class Flagquiz:
            self.timer_label.place_forget()
            self.hourglass_label.place_forget()
 
+       # Stop the timer while the help page is open
        if self.timer_id:
            self.root.after_cancel(self.timer_id)
            self.timer_id = None
 
+        # change to help page background
        self.bg_label.configure(image="", fg_color="#1d4d4f")
 
 
-       # Add "How to play" title
+       # Help page title
        self.help_title = ctk.CTkLabel(self.bg_label, text="How To Play",
                                       font=("CanvaSans", 56, "bold"), text_color="#ffffff")
        self.help_title.place(relx=0.5, rely=0.15, anchor="center")
@@ -590,7 +591,7 @@ class Flagquiz:
        self.rule6_body.place(relx=0.5, rely=0.36, anchor="center")
 
 
-       # Go Back layout switch button
+       # Go Back button
        self.back_button = ctk.CTkButton(self.bg_label, text="Go Back", corner_radius=32,
                                         width=200, height=60, fg_color="#475d5b", hover_color="#ffffff",
                                         text_color="#ffffff", font=("CanvaSans", 22, "bold"),
@@ -603,12 +604,10 @@ class Flagquiz:
    # return from help screen
    def close_help(self):
        self._help_page_open = False
-       # Clean up rules page components
+
+       # hide all help page widgets
        self.help_title.place_forget()
        self.back_button.place_forget()
-
-
-       # Clear all text from active memory
        self.rule1_header.place_forget()
        self.rule1_body.place_forget()
        self.rule2_header.place_forget()
@@ -639,7 +638,7 @@ class Flagquiz:
            self.username.place(relx=0.5, rely=0.7, anchor="center")
            self.start_button.place(relx=0.49, rely=0.5, anchor="center")
 
-
+       # restore diff page widgets
        elif self.current_page == "diff":
            rice_bg = Image.open("images/Rice.jpg")
            self.diff_image = ctk.CTkImage(light_image=rice_bg, dark_image=rice_bg,
@@ -651,7 +650,7 @@ class Flagquiz:
            self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
            self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
 
-
+       # restore quiz page widgets
        elif self.current_page == "quiz":
            rice_bg = Image.open("images/Rice.jpg")
            self.diff_image = ctk.CTkImage(light_image=rice_bg, dark_image=rice_bg,
@@ -664,11 +663,11 @@ class Flagquiz:
            self.flag_display.place(relx=0.28, rely=0.5, anchor="center")
            self.next_button.place(relx=0.65, rely=0.88, anchor="center")
 
-
+            # restore answer buttons
            for i, btn in enumerate(self.option_buttons):
                btn.place(relx=0.65, rely=0.35 + (i * 0.12), anchor="center")
 
-
+           # restore timer
            if self.difficulty in ("Medium", "Hard"):
                 self.timer_label.place(relx=0.9, rely=0.7, anchor="center")
                 self.hourglass_label.place(relx=0.9, rely=0.5, anchor="center")
