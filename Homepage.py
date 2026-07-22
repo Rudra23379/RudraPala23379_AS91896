@@ -42,8 +42,8 @@ class Flagquiz:
            {"image": "flags/FlagGreece.png", "options": ["Greece", "Finland", "Cyprus", "Israel"], "correct": "Greece"},
            {"image": "flags/FlagChina.png", "options": ["Vietnam", "China", "Taiwan", "Singapore"], "correct": "China"},
            {"image": "flags/FlagSweden.png", "options": ["Norway", "Denmark", "Sweden", "Iceland"],"correct": "Sweden"},
+           {"image": "flags/Flag_of_New_Zealand.png","options": ["Australia", "New Zealand", "United Kingdom", "Tuvalu"], "correct": "New Zealand"},
            {"image": "flags/Flag_of_New_Zealand.png","options": ["Australia", "New Zealand", "United Kingdom", "Tuvalu"], "correct": "New Zealand"}
-
        ]
 
        #UI window scaling
@@ -281,29 +281,30 @@ class Flagquiz:
                command=lambda opt=option, btn=self.option_buttons[i]: self.select_option(opt, btn)
            )
 
-           # Resetting timer for next question
-           if self.timer_id:
-               self.root.after_cancel(self.timer_id)
-               self.timer_id = None
+         # Resetting timer for next question
+       if self.timer_id:
+          self.root.after_cancel(self.timer_id)
+          self.timer_id = None
 
 
-           # Add countdown limits based on difficulty choice
-           if self.difficulty in ("Medium", "Hard"):
-               self.time_left = 10 if self.difficulty == "Medium" else 5
-               self.timer_label.configure(text=str(self.time_left))
-               self.timer_label.place(relx=0.9, rely=0.7, anchor="center")
-               self.start_timer_countdown()
-           else:
-               # hide the time if the user is on easy mode
-               self.timer_label.place_forget()
+        # Add countdown limits based on difficulty choice
+       if self.difficulty in ("Medium", "Hard"):
+          self.time_left = 10 if self.difficulty == "Medium" else 5
+          self.timer_label.configure(text=str(self.time_left))
+          self.timer_label.place(relx=0.9, rely=0.7, anchor="center")
+          self.start_timer_countdown()
+       else:
+        # hide the time if the user is on easy mode
+          self.timer_label.place_forget()
 
 
    def start_timer_countdown(self):
 
        # Check if there is still time left on the clock
            if self.time_left > 0:
-               self.time_left -= 1
                self.timer_label.configure(text=str(self.time_left))
+               self.time_left -= 1
+
 
                # Flip the hourglass angle by 180 degrees every second
                self.hourglass_angle = (self.hourglass_angle + 180) % 360
@@ -376,7 +377,10 @@ class Flagquiz:
            self.root.after_cancel(self.timer_id)
            self.timer_id = None
        self.hourglass_label.place_forget()
-
+       self.quit_icon.place_forget()
+       self.quit_button.place_forget()
+       self.help_button.place_forget()
+       self.help_icon.place_forget()
 
 
        # page tracker
@@ -455,6 +459,12 @@ class Flagquiz:
        self.play_again_box.place_forget()
        self.results_title.place_forget()
        self.score_display.place_forget()
+
+       # re-adding my Quit and Help buttons
+       self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
+       self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
+       self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
+       self.help_button.place(relx=0.94, rely=0.16, anchor="center")
 
        # page tracker
        self.current_page = "diff"
