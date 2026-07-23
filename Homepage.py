@@ -71,14 +71,13 @@ class Flagquiz:
                                       bg_color="#c8e690")
        self.title_text.place(relx=0.46, rely=0.15, anchor="center")
 
-
        # Quit button
-       self.quit_button = ctk.CTkButton(self.bg_label, text="Quit", command=root.quit,
-                                        text_color="#ffffff", corner_radius=27, width=160,
-                                        height=40, bg_color="#c8e690", border_width=0,
-                                        font=("CanvaSans", 22, "bold"), fg_color="#2d6349")
+       self.quit_button = ctk.CTkButton(self.bg_label, text="Quit", bg_color="#c8e690", hover_color="#ffffff",
+                                        fg_color="#2d6349", font=("CanvaSans", 22, "bold"), corner_radius=32,
+                                        width=160,
+                                        height=40,
+                                        command=root.quit)
        self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
-
 
        # Quit button icon
        self.quit_icon = ctk.CTkButton(self.bg_label, text="⏻", width=64, height=64, corner_radius=32,
@@ -86,13 +85,11 @@ class Flagquiz:
                                       bg_color="#c8e690", hover_color="#ffffff", fg_color="#1a3b2c")
        self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
 
-
        # Help button icon
        self.help_icon = ctk.CTkButton(self.bg_label, text=" ? ", width=64, height=64, corner_radius=32,
                                       font=("CanvaSans", 36, "bold"), bg_color="#c8e690", hover_color="#ffffff",
                                       fg_color="#1a3b2c", command=self.help_page)
        self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
-
 
        # Help button
        self.help_button = ctk.CTkButton(self.bg_label, text="Help", bg_color="#c8e690", hover_color="#ffffff",
@@ -101,7 +98,6 @@ class Flagquiz:
                                         height=40,
                                         command=self.help_page)
        self.help_button.place(relx=0.94, rely=0.16, anchor="center")
-
 
        # Username Input
        self.username = ctk.CTkEntry(self.bg_label, placeholder_text="please enter your name here",
@@ -149,27 +145,32 @@ class Flagquiz:
                                       size=(self.screen_width, self.screen_height))
        self.bg_label.configure(image=self.diff_image)
 
-
        # Show difficulty options
-       #easy difficulty
-       self.easy_button = ctk.CTkButton(self.bg_label, text="Easy", width=180, height=250, corner_radius=32,
-                                        font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
+       # easy difficulty
+       self.easy_button = ctk.CTkButton(self.bg_label, text="Easy\nNo timer\n\nTake your time and learn",
+                                        width=180, height=250, corner_radius=32,
+                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
                                         command=lambda: self.start_quiz("Easy"))
        self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
-
-       # medium difficulty
-       self.medium_button = ctk.CTkButton(self.bg_label, text="Medium", width=180, height=250, corner_radius=32,
-                                          font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
-                                          command=lambda: self.start_quiz("Medium"))
-       self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
-
+       # Normal difficulty
+       self.Normal_button = ctk.CTkButton(self.bg_label, text="Normal\n10 second timer\n\nA balanced challenge"
+                                          , width=180, height=250, corner_radius=32,
+                                          font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
+                                          command=lambda: self.start_quiz("Normal"))
+       self.Normal_button.place(relx=0.504, rely=0.5, anchor="center")
 
        # hard difficulty
-       self.hard_button = ctk.CTkButton(self.bg_label, text="Hard", width=180, height=250, corner_radius=32,
-                                        font=("CanvaSans", 28, "bold"), fg_color="#1a7556",
+       self.hard_button = ctk.CTkButton(self.bg_label, text="Hard\n5 second timer\n\nFast and challenging"
+                                        , width=180, height=250, corner_radius=32,
+                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
                                         command=lambda: self.start_quiz("Hard"))
        self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
+
+       self.diff_title = ctk.CTkLabel(self.bg_label, text="Choose the difficulty setting you would like to play",
+                                      font=("CanvaSans", 42, "bold"), text_color="#000000", fg_color="transparent")
+
+       self.diff_title.place(relx=0.5, rely=0.12, anchor="center")
 
 
 
