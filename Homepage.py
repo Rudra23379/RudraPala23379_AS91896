@@ -149,8 +149,8 @@ class Flagquiz:
        # easy difficulty
        self.easy_button = ctk.CTkButton(self.bg_label, text="Easy\nNo timer\n\nTake your time and learn",
                                         width=180, height=250, corner_radius=32,
-                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
-                                        command=lambda: self.start_quiz("Easy"))
+                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",  hover_color="#ffffff",
+                                        command=lambda: self.start_quiz("Easy") )
        self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
        # Normal difficulty
@@ -187,7 +187,7 @@ class Flagquiz:
        self.easy_button.place_forget()
        self.Normal_button.place_forget()
        self.hard_button.place_forget()
-
+       self.diff_title.place_forget()
        # Question title
        self.quiz_title = ctk.CTkLabel(self.bg_label, text="Which Country's Flag Is This?",
                                       font=("CanvaSans", 42, "bold"), text_color="#1a5156",
