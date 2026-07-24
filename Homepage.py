@@ -185,7 +185,7 @@ class Flagquiz:
 
        # removing the difficulty selection widgets from the screen
        self.easy_button.place_forget()
-       self.medium_button.place_forget()
+       self.Normal_button.place_forget()
        self.hard_button.place_forget()
 
        # Question title
@@ -289,8 +289,8 @@ class Flagquiz:
 
 
         # Add countdown limits based on difficulty choice
-       if self.difficulty in ("Medium", "Hard"):
-          self.time_left = 10 if self.difficulty == "Medium" else 5
+       if self.difficulty in ("Normal", "Hard"):
+          self.time_left = 10 if self.difficulty == "Normal" else 5
           self.timer_label.configure(text=str(self.time_left))
           self.timer_label.place(relx=0.9, rely=0.7, anchor="center")
           self.start_timer_countdown()
@@ -453,6 +453,7 @@ class Flagquiz:
        self.play_again_box.place(relx=0.78, rely=0.52, anchor="center")
 
 
+
   # Go back to the diff screen
    def play_again(self):
        self.quit_box.place_forget()
@@ -484,11 +485,11 @@ class Flagquiz:
                                         command=lambda: self.start_quiz("Easy"))
        self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
-       # medium difficulty
-       self.medium_button = ctk.CTkButton(self.bg_label, text="Medium", width=180, height=250, corner_radius=32,
+       # Normal difficulty
+       self.Normal_button = ctk.CTkButton(self.bg_label, text="Normal", width=180, height=250, corner_radius=32,
                                           font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
-                                          command=lambda: self.start_quiz("Medium"))
-       self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
+                                          command=lambda: self.start_quiz("Normal"))
+       self.Normal_button.place(relx=0.5, rely=0.5, anchor="center")
 
        # hard difficulty
        self.hard_button = ctk.CTkButton(self.bg_label, text="Hard", width=180, height=250, corner_radius=32,
@@ -515,7 +516,7 @@ class Flagquiz:
            self.start_button.place_forget()
        elif self.current_page == "diff":
            self.easy_button.place_forget()
-           self.medium_button.place_forget()
+           self.Normal_button.place_forget()
            self.hard_button.place_forget()
        elif self.current_page == "quiz":
            self.quiz_title.place_forget()
@@ -658,7 +659,7 @@ class Flagquiz:
 
 
            self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
-           self.medium_button.place(relx=0.5, rely=0.5, anchor="center")
+           self.Normal_button.place(relx=0.5, rely=0.5, anchor="center")
            self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
 
        # restore quiz page widgets
@@ -679,7 +680,7 @@ class Flagquiz:
                btn.place(relx=0.65, rely=0.35 + (i * 0.12), anchor="center")
 
            # restore timer
-           if self.difficulty in ("Medium", "Hard"):
+           if self.difficulty in ("Normal", "Hard"):
                 self.timer_label.place(relx=0.9, rely=0.7, anchor="center")
                 self.hourglass_label.place(relx=0.9, rely=0.5, anchor="center")
                 self.start_timer_countdown()
