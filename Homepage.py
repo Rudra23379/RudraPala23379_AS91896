@@ -38,7 +38,7 @@ class Flagquiz:
            {"image": "flags/Flag_of_Mexico.png", "options": ["Italy", "Mexico", "Spain", "Guatemala"],"correct": "Mexico"},
            {"image": "flags/Flag-South-Africa.png", "options": ["Jamaica", "Kenya", "Ghana", "South Africa"],"correct": "South Africa"},
            {"image": "flags/Flag_of_Argentina.png", "options": ["Uruguay", "Argentina", "Honduras", "Greece"],"correct": "Argentina"},
-           {"image": "flags/spain.png", "options": ["Portugal", "Spain", "France", "Andorra"], "correct": "Spain"},
+           {"image": "flags/spain.jpg", "options": ["Portugal", "Spain", "France", "Andorra"], "correct": "Spain"},
            {"image": "flags/FlagGreece.png", "options": ["Greece", "Finland", "Cyprus", "Israel"], "correct": "Greece"},
            {"image": "flags/FlagChina.png", "options": ["Vietnam", "China", "Taiwan", "Singapore"], "correct": "China"},
            {"image": "flags/FlagSweden.png", "options": ["Norway", "Denmark", "Sweden", "Iceland"],"correct": "Sweden"},
@@ -295,9 +295,9 @@ class Flagquiz:
           self.timer_label.place(relx=0.9, rely=0.7, anchor="center")
           self.start_timer_countdown()
        else:
-        # hide the time if the user is on easy mode
+        # hide the timer and hourglass label if the user is on easy mode
           self.timer_label.place_forget()
-
+          self.hourglass_label.place_forget()
 
    def start_timer_countdown(self):
 
@@ -480,27 +480,30 @@ class Flagquiz:
 
        # Show difficulty options
        # easy difficulty
-       self.easy_button = ctk.CTkButton(self.bg_label, text="Easy", width=180, height=250, corner_radius=32,
-                                        font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
+       self.easy_button = ctk.CTkButton(self.bg_label, text="Easy\nNo timer\n\nTake your time and learn",
+                                        width=180, height=250, corner_radius=32,
+                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110", hover_color="#ffffff",
                                         command=lambda: self.start_quiz("Easy"))
        self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
        # Normal difficulty
-       self.Normal_button = ctk.CTkButton(self.bg_label, text="Normal", width=180, height=250, corner_radius=32,
-                                          font=("CanvaSans", 28, "bold"), fg_color="#1a5156",
+       self.Normal_button = ctk.CTkButton(self.bg_label, text="Normal\n10 second timer\n\nA balanced challenge"
+                                          , width=180, height=250, corner_radius=32,
+                                          font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
                                           command=lambda: self.start_quiz("Normal"))
-       self.Normal_button.place(relx=0.5, rely=0.5, anchor="center")
+       self.Normal_button.place(relx=0.504, rely=0.5, anchor="center")
 
        # hard difficulty
-       self.hard_button = ctk.CTkButton(self.bg_label, text="Hard", width=180, height=250, corner_radius=32,
-                                        font=("CanvaSans", 28, "bold"), fg_color="#1a7556",
+       self.hard_button = ctk.CTkButton(self.bg_label, text="Hard\n5 second timer\n\nFast and challenging"
+                                        , width=180, height=250, corner_radius=32,
+                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
                                         command=lambda: self.start_quiz("Hard"))
        self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
 
+       self.diff_title = ctk.CTkLabel(self.bg_label, text="Choose the difficulty setting you would like to play",
+                                      font=("CanvaSans", 42, "bold"), text_color="#000000", fg_color="transparent")
 
-
-
-
+       self.diff_title.place(relx=0.5, rely=0.12, anchor="center")
 
    #  help page
    def help_page(self):
@@ -518,6 +521,7 @@ class Flagquiz:
            self.easy_button.place_forget()
            self.Normal_button.place_forget()
            self.hard_button.place_forget()
+           self.diff_title.place_forget()
        elif self.current_page == "quiz":
            self.quiz_title.place_forget()
            self.question_tracker.place_forget()
@@ -661,6 +665,7 @@ class Flagquiz:
            self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
            self.Normal_button.place(relx=0.5, rely=0.5, anchor="center")
            self.hard_button.place(relx=0.75, rely=0.5, anchor="center")
+           self.diff_title.place(relx=0.5, rely=0.12, anchor="center")
 
        # restore quiz page widgets
        elif self.current_page == "quiz":
