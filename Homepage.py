@@ -149,7 +149,7 @@ class Flagquiz:
        # easy difficulty
        self.easy_button = ctk.CTkButton(self.bg_label, text="Easy\nNo timer\n\nTake your time and learn",
                                         width=180, height=250, corner_radius=32,
-                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",  hover_color="#ffffff",
+                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
                                         command=lambda: self.start_quiz("Easy") )
        self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
@@ -393,7 +393,7 @@ class Flagquiz:
        # choose the correct results page from the player's score
        if percentage >= 50:
            title_text = "You passed!"
-           title_color = "#ffffff"
+           title_color = "#1a3b2c"
            bg_results = "images/win.jpg"
            feedback_text = f"Well done {self.username.get()}, you scored {self.score}/{len(self.questions)}"
        else:
@@ -431,7 +431,7 @@ class Flagquiz:
        # Quit box if the user would like to quiz the quiz
        self.quit_box = ctk.CTkButton(self.bg_label, text="No Thanks!\n\n(Quit program)",
                                      font=("CanvaSans", 22, "bold"), text_color="#ffffff",
-                                     fg_color="#163333", hover_color="#ffffff",
+                                     fg_color="#163333", hover_color="#1a3b2c",
                                      width=260, height=220, corner_radius=32,
                                      command=self.root.destroy)
        self.quit_box.place(relx=0.22, rely=0.52, anchor="center")
@@ -447,7 +447,7 @@ class Flagquiz:
        # Play again box
        self.play_again_box = ctk.CTkButton(self.bg_label, text="Yes Please!\n\n(Play Again)",
                                            font=("CanvaSans", 22, "bold"), text_color="#ffffff",
-                                           fg_color="#163333", hover_color="#ffffff",
+                                           fg_color="#163333", hover_color="#268530",
                                            width=260, height=220, corner_radius=32,
                                            command=self.play_again)
        self.play_again_box.place(relx=0.78, rely=0.52, anchor="center")
@@ -482,7 +482,7 @@ class Flagquiz:
        # easy difficulty
        self.easy_button = ctk.CTkButton(self.bg_label, text="Easy\nNo timer\n\nTake your time and learn",
                                         width=180, height=250, corner_radius=32,
-                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110", hover_color="#ffffff",
+                                        font=("CanvaSans", 20, "bold"), fg_color="#0c3110",
                                         command=lambda: self.start_quiz("Easy"))
        self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
 
@@ -531,6 +531,14 @@ class Flagquiz:
                btn.place_forget()
            self.timer_label.place_forget()
            self.hourglass_label.place_forget()
+
+
+       #hide my help and quit buttons
+       self.quit_icon.place_forget()
+       self.quit_button.place_forget()
+       self.help_button.place_forget()
+       self.help_icon.place_forget()
+
 
        # Stop the timer while the help page is open
        if self.timer_id:
@@ -636,8 +644,6 @@ class Flagquiz:
        self.rule5_body.place_forget()
        self.rule6_header.place_forget()
        self.rule6_body.place_forget()
-
-
 
 
 
