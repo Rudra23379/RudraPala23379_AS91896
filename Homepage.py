@@ -43,7 +43,6 @@ class Flagquiz:
            {"image": "flags/FlagChina.png", "options": ["Vietnam", "China", "Taiwan", "Singapore"], "correct": "China"},
            {"image": "flags/FlagSweden.png", "options": ["Norway", "Denmark", "Sweden", "Iceland"],"correct": "Sweden"},
            {"image": "flags/Flag_of_New_Zealand.png","options": ["Australia", "New Zealand", "United Kingdom", "Tuvalu"], "correct": "New Zealand"},
-           {"image": "flags/Flag_of_New_Zealand.png","options": ["Australia", "New Zealand", "United Kingdom", "Tuvalu"], "correct": "New Zealand"}
        ]
 
        #UI window scaling
@@ -646,6 +645,10 @@ class Flagquiz:
        self.rule6_body.place_forget()
 
 
+       self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
+       self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
+       self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
+       self.help_button.place(relx=0.94, rely=0.16, anchor="center")
 
 
        # Restore the layout the user came from
