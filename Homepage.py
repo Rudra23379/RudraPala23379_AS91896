@@ -43,6 +43,7 @@ class Flagquiz:
            {"image": "flags/FlagChina.png", "options": ["Vietnam", "China", "Taiwan", "Singapore"], "correct": "China"},
            {"image": "flags/FlagSweden.png", "options": ["Norway", "Denmark", "Sweden", "Iceland"],"correct": "Sweden"},
            {"image": "flags/Flag_of_New_Zealand.png","options": ["Australia", "New Zealand", "United Kingdom", "Tuvalu"], "correct": "New Zealand"},
+           {"image": "flags/Egypt.png", "options": ["Syria", "Iraq", "Yemen", "Egypt"], "correct": "Egypt"},
        ]
 
        #UI window scaling
@@ -127,6 +128,16 @@ class Flagquiz:
        elif any(digit in '0123456789' for digit in player_name):
            messagebox.showerror("Invalid Name", "Your name cannot contain numbers!")
            return
+       elif len(player_name) < 2:
+           messagebox.showerror("Invaild Name","Your name cannot be lower than 2 characters")
+           return
+       elif len(player_name) > 20:
+           messagebox.showerror("Invaild Name","Your name must be 20 characters or lower!")
+           return
+       elif any(word in player_name.lower() for word in ["idiot","stupid","dumb","fuck", "fucker",
+       "bitch","cunt","ass","dumbass","shit","nigger"]):
+           messagebox.showerror("Invalid Name","Please enter an appropriate username!")
+           return
 
        # Update page tracker
        self.current_page = "diff"
@@ -190,7 +201,7 @@ class Flagquiz:
        # Question title
        self.quiz_title = ctk.CTkLabel(self.bg_label, text="Which Country's Flag Is This?",
                                       font=("CanvaSans", 42, "bold"), text_color="#1a5156",
-                                      fg_color="transparent")
+                                      fg_color="transparent",bg_color="#ffffff")
        self.quiz_title.place(relx=0.5, rely=0.15, anchor="center")
 
       # Question label/tracker
@@ -299,34 +310,32 @@ class Flagquiz:
           self.hourglass_label.place_forget()
 
    def start_timer_countdown(self):
+       self.timer_label.configure(text=str(self.time_left))
 
-       # Check if there is still time left on the clock
-           if self.time_left > 0:
-               self.timer_label.configure(text=str(self.time_left))
-               self.time_left -= 1
+       if self.time_left <= 0:
+           self.root.after(100, self.time_up)
+           return
+
+       self.time_left -= 1
+
+       # Flip the hourglass angle by 180 degrees every second
+       self.hourglass_angle = (self.hourglass_angle + 180) % 360
+
+       # Rotate the hourglass image
+       rotated_img = self.hourglass_original.rotate(-self.hourglass_angle, resample=Image.BICUBIC)
+       ctk_hourglass = ctk.CTkImage(light_image=rotated_img, dark_image=rotated_img, size=(100, 100))
+
+       # Display the newly rotated image
+       self.hourglass_label.configure(image=ctk_hourglass)
+       self.hourglass_label._image = ctk_hourglass
+
+       # Loop again after 1 second
+       self.timer_id = self.root.after(1000, self.start_timer_countdown)
 
 
-               # Flip the hourglass angle by 180 degrees every second
-               self.hourglass_angle = (self.hourglass_angle + 180) % 360
-
-
-                # Rotate the hourglass image
-               rotated_img = self.hourglass_original.rotate(-self.hourglass_angle, resample=Image.BICUBIC)
-               ctk_hourglass = ctk.CTkImage(light_image=rotated_img, dark_image=rotated_img, size=(100, 100))
-
-
-               # Display the newly rotated image
-               self.hourglass_label.configure(image=ctk_hourglass)
-               self.hourglass_label._image = ctk_hourglass
-
-
-               # Loop again after 1 second
-               self.timer_id = self.root.after(1000, self.start_timer_countdown)
-           else:
-               # If time ran out, let the user know and move to the next question
-               messagebox.showinfo("Time's Up!", "You ran out of time for this question!")
-               self.next_question()
-
+   def time_up(self):
+       messagebox.showinfo("Time's Up!", "You ran out of time for this question!")
+       self.next_question()
 
    def select_option(self, chosen_text, clicked_button):
 
@@ -430,7 +439,7 @@ class Flagquiz:
        # Quit box if the user would like to quiz the quiz
        self.quit_box = ctk.CTkButton(self.bg_label, text="No Thanks!\n\n(Quit program)",
                                      font=("CanvaSans", 22, "bold"), text_color="#ffffff",
-                                     fg_color="#163333", hover_color="#1a3b2c",
+                                     fg_color="#163333", hover_color="#268530",
                                      width=260, height=220, corner_radius=32,
                                      command=self.root.destroy)
        self.quit_box.place(relx=0.22, rely=0.52, anchor="center")
@@ -656,7 +665,7 @@ class Flagquiz:
            self.bg_image = Image.open("images/firewatch.jpg")
            self.bg_image = ctk.CTkImage(light_image=self.bg_image, dark_image=self.bg_image,
                                         size=(self.screen_width, self.screen_height))
-           self.bg_label.configure(image=self.bg_image)
+           self.bg_label.configure(image=self.bg_image,fg_color="transparent")
 
 
            self.title_text.place(relx=0.46, rely=0.15, anchor="center")
@@ -668,7 +677,7 @@ class Flagquiz:
            rice_bg = Image.open("images/Rice.jpg")
            self.diff_image = ctk.CTkImage(light_image=rice_bg, dark_image=rice_bg,
                                           size=(self.screen_width, self.screen_height))
-           self.bg_label.configure(image=self.diff_image)
+           self.bg_label.configure(image=self.diff_image,fg_color="transparent")
 
 
            self.easy_button.place(relx=0.25, rely=0.5, anchor="center")
