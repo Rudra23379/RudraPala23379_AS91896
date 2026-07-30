@@ -515,7 +515,7 @@ class Flagquiz:
 
    #  help page
    def help_page(self):
-
+       # Stops multiple help windows from opening if button is clicked repeatedly
        if getattr(self, "_help_page_open", False):
            return
        self._help_page_open = True
@@ -653,7 +653,7 @@ class Flagquiz:
        self.rule6_header.place_forget()
        self.rule6_body.place_forget()
 
-
+       # replacing my quit and help buttion and icon widgets
        self.quit_button.place(relx=0.06, rely=0.16, anchor="center")
        self.quit_icon.place(relx=0.06, rely=0.08, anchor="center")
        self.help_icon.place(relx=0.94, rely=0.08, anchor="center")
